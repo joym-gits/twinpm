@@ -1,0 +1,82 @@
+name: twinpm
+
+x-api-env: &api-env
+  DATABASE_URL: postgresql+asyncpg://twinpm:twinpm@postgres:5432/twinpm
+  REDIS_URL: redis://redis:6379/0
+  MODELS_DIR: /app/models
+  CORS_ORIGINS: '["http://localhost:${WEB_PORT:-3100}"]'
+  JWT_SECRET: ${JWT_SECRET:-dev-only-change-me-0123456789abcdef0123456789}
+  FERNET_KEY: ${FERNET_KEY:-}
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+  ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-5-5}
+  ANTHROPIC_MODEL_ORCHESTRATOR: ${ANTHROPIC_MODEL_ORCHESTRATOR:-claude-opus-5-5}
+  DEMO_MODE: ${DEMO_MODE:-false}
+  DEMO_LIVE_TICKS: ${DEMO_LIVE_TICKS:-true}
+  SEED_DEMO_PASSWORD: ${SEED_DEMO_PASSWORD:-TwinPM-demo-2026!}
+  OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: twinpm
+      POSTGRES_PASSWORD: twinpm
+      POSTGRES_DB: twinpm
+    ports: ["${POSTGRES_PORT:-5432}:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U twinpm -d twinpm"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports: ["${REDIS_PORT:-6379}:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: { context: ./apps/api }
+    environment: *api-env
+    ports: ["${API_PORT:-8000}:8000"]
+    volumes: [models:/app/models]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/healthz').status==200 else 1)"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  worker:
+    build: { context: ./apps/api }
+    command: ["arq", "twinpm.workers.settings.WorkerSettings"]
+    environment: *api-env
+    volumes: [models:/app/models]
+    depends_on:
+      api: { condition: service_healthy }
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    environment:
+      API_INTERNAL_URL: http://api:8000
+      PORT: "3000"
+    ports: ["${WEB_PORT:-3100}:3000"]
+    depends_on:
+      api: { condition: service_healthy }
+
+  otel-collector:
+    profiles: ["observability"]
+    image: otel/opentelemetry-collector:latest
+    ports: ["4318:4318"]
+
+volumes:
+  pgdata:
+  models:

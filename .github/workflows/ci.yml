@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv python install 3.12
+      - run: uv sync --frozen
+      - name: Lint
+        run: uv run ruff check twinpm && uv run ruff format --check twinpm
+      - name: Type-check
+        run: uv run mypy twinpm
+      - name: Tests (testcontainers Postgres + Redis)
+        run: uv run pytest --cov=twinpm --cov-report=term-missing:skip-covered --cov-report=xml
+      - name: Agent evals (demo model)
+        run: uv run python -m twinpm.agents.evals.run --fail-under 0.9
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @twinpm/web lint
+      - run: pnpm --filter @twinpm/web typecheck
+      - run: pnpm --filter @twinpm/web test
+      - run: pnpm --filter @twinpm/web build
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    env:
+      DEMO_MODE: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - name: Build and start stack (demo mode)
+        run: docker compose up -d --build --wait
+      - name: Seed and train
+        run: |
+          docker compose exec -T api python -m twinpm.seed --seed 42
+          docker compose exec -T api python -m twinpm.ml.train_all
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @twinpm/web exec playwright install --with-deps chromium
+      - name: Playwright demo flow
+        run: pnpm --filter @twinpm/web e2e
+        env:
+          E2E_BASE_URL: http://localhost:3100
+      - if: failure()
+        run: docker compose logs --no-color > compose.log
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-debug
+          path: |
+            compose.log
+            apps/web/playwright-report

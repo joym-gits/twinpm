@@ -1,0 +1,17 @@
+{
+  "name": "twinpm",
+  "private": true,
+  "packageManager": "pnpm@12.21.0",
+  "scripts": {
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "dev": "turbo run dev",
+    "format": "prettier --write \"apps/web/**/*.{ts,tsx,css,json}\" \"packages/**/*.{ts,json}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.6.0",
+    "turbo": "^2.11.13"
+  }
+}

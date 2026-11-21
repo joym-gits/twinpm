@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^apps/api/
+      - id: ruff-format
+        files: ^apps/api/
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy --strict
+        entry: bash -c 'cd apps/api && uv run mypy twinpm'
+        language: system
+        pass_filenames: false
+        files: ^apps/api/.*\.py$
+      - id: web-lint
+        name: eslint + tsc
+        entry: bash -c 'cd apps/web && pnpm lint && pnpm typecheck'
+        language: system
+        pass_filenames: false
+        files: ^apps/web/
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        exclude: ^deploy/helm/
+      - id: end-of-file-fixer
+      - id: detect-private-key
