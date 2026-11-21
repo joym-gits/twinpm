@@ -91,6 +91,7 @@ class WorkItem(TenantMixin, SoftDeleteMixin, Base):
     )
     epic_id: Mapped[uuid.UUID | None] = _fk("epics")
     team_id: Mapped[uuid.UUID | None] = _fk("teams")
+    sprint_id: Mapped[uuid.UUID | None] = _fk("sprints")
     key: Mapped[str] = mapped_column(String(32))
     title: Mapped[str] = mapped_column(String(300))
     description: Mapped[str] = mapped_column(Text, default="")

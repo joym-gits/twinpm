@@ -22,9 +22,9 @@ Tracks Section 14 of `BUILD_SPEC.md`. A phase is checked only after its gate ran
 - [x] **Gate:** migrations apply; tenant isolation test passes; login works end to end
 
 ## Phase 3: Synthetic data
-- [ ] Deterministic generator (Section 5), `make seed`, summary table
-- [ ] `docs/DATA_DICTIONARY.md`
-- [ ] **Gate:** two runs produce identical hashes; storyline assertions pass
+- [x] Deterministic generator (Section 5), `make seed`, summary table
+- [x] `docs/DATA_DICTIONARY.md`
+- [x] **Gate:** two runs produce identical hashes; storyline assertions pass
 
 ## Phase 4: ML platform
 - [ ] Features, registry, inference, SHAP

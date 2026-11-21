@@ -15,7 +15,11 @@ from twinpm.tests.factories import make_org
 async def test_audit_rows_cannot_be_updated_or_deleted(db: AsyncSession) -> None:
     o = await make_org(db)
     entry = await audit.record(
-        db, o.ctx(), action="test.created", entity_type="program", entity_id=o.program.id,
+        db,
+        o.ctx(),
+        action="test.created",
+        entity_type="program",
+        entity_id=o.program.id,
         after={"x": 1},
     )
     await db.commit()

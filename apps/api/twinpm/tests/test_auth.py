@@ -88,9 +88,7 @@ async def test_rbac_member_cannot_manage_members(
     assert r.json()["error"]["code"] == "forbidden"
 
 
-async def test_admin_creates_member_and_audits(
-    client: httpx.AsyncClient, db: AsyncSession
-) -> None:
+async def test_admin_creates_member_and_audits(client: httpx.AsyncClient, db: AsyncSession) -> None:
     o = await make_org(db)
     await _login(client, o.users["org_admin"].email)
     h = {"x-csrf-token": client.cookies[CSRF_COOKIE]}

@@ -48,7 +48,7 @@ class Risk(TenantMixin, SoftDeleteMixin, Base):
     description: Mapped[str] = mapped_column(Text, default="")
     probability: Mapped[float] = mapped_column(Float)
     impact: Mapped[int] = mapped_column(Integer)
-    severity: Mapped[float] = mapped_column(Float, Computed("probability * impact"))
+    severity: Mapped[float] = mapped_column(Float, Computed("probability * impact", persisted=True))
     owner_person_id: Mapped[uuid.UUID | None] = _fk("people")
     mitigation: Mapped[str] = mapped_column(Text, default="")
     status: Mapped[str] = mapped_column(String(16), default="open")

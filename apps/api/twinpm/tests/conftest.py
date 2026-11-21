@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import os
 import uuid
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import AsyncIterator
 from pathlib import Path
 
 import pytest
@@ -49,8 +49,9 @@ def _boot_services() -> None:
 
 def pytest_configure(config: pytest.Config) -> None:
     _boot_services()
-    from alembic import command
     from alembic.config import Config
+
+    from alembic import command
 
     root = Path(__file__).resolve().parents[2]
     cfg = Config(str(root / "alembic.ini"))
@@ -64,10 +65,10 @@ def pytest_unconfigure(config: pytest.Config) -> None:
 
 
 @pytest.fixture(scope="session")
-def app() -> Iterator[object]:
+def app() -> object:
     from twinpm.main import app as fastapi_app
 
-    yield fastapi_app
+    return fastapi_app
 
 
 @pytest.fixture

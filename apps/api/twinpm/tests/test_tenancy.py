@@ -35,7 +35,7 @@ async def test_cross_tenant_writes_are_refused(db: AsyncSession) -> None:
     with pytest.raises(PermissionError):
         repo_a.add(Team(org_id=b.org.id, name="smuggled"))
     with pytest.raises(PermissionError):
-        await repo_a.soft_delete(Team(org_id=b.org.id, name="x"))  # type: ignore[arg-type]
+        await repo_a.soft_delete(Team(org_id=b.org.id, name="x"))
 
 
 async def test_add_stamps_org_and_soft_delete_hides(db: AsyncSession) -> None:

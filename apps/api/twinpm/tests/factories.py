@@ -34,8 +34,12 @@ async def make_org(session: AsyncSession, slug: str | None = None) -> OrgFixture
     pw = hash_password(PASSWORD)
     for role in ("org_admin", "tpm", "eng_manager", "executive", "member", "viewer"):
         u = User(
-            org_id=org.id, email=f"{role}@{slug}.test", name=f"{role.title()} User",
-            password_hash=pw, role=role, is_active=True,
+            org_id=org.id,
+            email=f"{role}@{slug}.test",
+            name=f"{role.title()} User",
+            password_hash=pw,
+            role=role,
+            is_active=True,
         )
         session.add(u)
         users[role] = u

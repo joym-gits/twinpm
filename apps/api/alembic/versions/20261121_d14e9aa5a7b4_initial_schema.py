@@ -22,6 +22,11 @@ AUDIT_TRIGGER = [
     """
     CREATE OR REPLACE FUNCTION audit_log_append_only() RETURNS trigger AS $$
     BEGIN
+      -- Only a whole-tenant purge (offboarding, demo reset) may delete rows, and only when
+      -- the purge flag is set for the current transaction. UPDATE is never allowed.
+      IF TG_OP = 'DELETE' AND current_setting('twinpm.audit_purge', true) = 'on' THEN
+        RETURN OLD;
+      END IF;
       RAISE EXCEPTION 'audit_log is append-only (% rejected)', TG_OP
         USING ERRCODE = 'insufficient_privilege';
     END;
@@ -551,7 +556,7 @@ def upgrade() -> None:
     sa.Column('description', sa.Text(), nullable=False),
     sa.Column('probability', sa.Float(), nullable=False),
     sa.Column('impact', sa.Integer(), nullable=False),
-    sa.Column('severity', sa.Float(), sa.Computed('probability * impact', ), nullable=False),
+    sa.Column('severity', sa.Float(), sa.Computed('probability * impact', persisted=True), nullable=False),
     sa.Column('owner_person_id', sa.UUID(), nullable=True),
     sa.Column('mitigation', sa.Text(), nullable=False),
     sa.Column('status', sa.String(length=16), nullable=False),
