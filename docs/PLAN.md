@@ -13,13 +13,13 @@ Tracks Section 14 of `BUILD_SPEC.md`. A phase is checked only after its gate ran
 - [x] **Gate:** `make dev` starts everything; `/readyz` green; shell renders; CI config valid
 
 ## Phase 2: Data and auth
-- [ ] SQLAlchemy models for Section 4 + Alembic migrations
-- [ ] Repository layer with tenancy
-- [ ] Auth (Argon2, JWT access/refresh rotation, cookies, CSRF) + RBAC
-- [ ] Append-only audit log (trigger + repository)
-- [ ] OpenAPI → generated TS client
-- [ ] Login flow
-- [ ] **Gate:** migrations apply; tenant isolation test passes; login works end to end
+- [x] SQLAlchemy models for Section 4 + Alembic migrations
+- [x] Repository layer with tenancy
+- [x] Auth (Argon2, JWT access/refresh rotation, cookies, CSRF) + RBAC
+- [x] Append-only audit log (trigger + repository)
+- [x] OpenAPI → generated TS client
+- [x] Login flow
+- [x] **Gate:** migrations apply; tenant isolation test passes; login works end to end
 
 ## Phase 3: Synthetic data
 - [ ] Deterministic generator (Section 5), `make seed`, summary table
