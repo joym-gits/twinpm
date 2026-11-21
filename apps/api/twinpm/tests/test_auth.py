@@ -102,3 +102,15 @@ async def test_admin_creates_member_and_audits(client: httpx.AsyncClient, db: As
 async def test_unauthenticated_is_401(client: httpx.AsyncClient) -> None:
     r = await client.get("/api/v1/auth/me")
     assert r.status_code == 401
+
+
+async def test_rate_limit_blocks_after_limit(unique: str) -> None:
+    import pytest
+
+    from twinpm.core import rate_limit
+    from twinpm.core.errors import RateLimitedError
+
+    for _ in range(3):
+        await rate_limit.hit("test", unique, 3)
+    with pytest.raises(RateLimitedError):
+        await rate_limit.hit("test", unique, 3)

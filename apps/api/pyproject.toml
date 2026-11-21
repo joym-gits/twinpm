@@ -86,7 +86,7 @@ select = ["E", "F", "W", "I", "B", "UP", "N", "S", "ASYNC", "RUF", "SIM", "C4", 
 ignore = ["S101", "B008", "RUF012", "S311"]
 
 [tool.ruff.lint.per-file-ignores]
-"twinpm/tests/**" = ["S105", "S106", "S108", "N802"]
+"twinpm/tests/**" = ["S105", "S106", "S108", "N802", "PT018"]
 "twinpm/seed/**" = ["S105", "S106"]
 
 [tool.mypy]
@@ -108,4 +108,5 @@ filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.coverage.run]
 source = ["twinpm"]
+concurrency = ["greenlet", "thread"]
 omit = ["twinpm/tests/*", "twinpm/seed/*"]

@@ -1,6 +1,824 @@
 {
   "components": {
     "schemas": {
+      "ActivityItem": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Id"
+          },
+          "actor_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Name"
+          },
+          "actor_type": {
+            "title": "Actor Type",
+            "type": "string"
+          },
+          "entity_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          },
+          "entity_type": {
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "suggestion_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggestion Id"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "actor_type",
+          "actor_id",
+          "actor_name",
+          "action",
+          "entity_type",
+          "entity_id",
+          "summary",
+          "reason",
+          "suggestion_id",
+          "occurred_at"
+        ],
+        "title": "ActivityItem",
+        "type": "object"
+      },
+      "AddScope": {
+        "properties": {
+          "epic_id": {
+            "format": "uuid",
+            "title": "Epic Id",
+            "type": "string"
+          },
+          "items": {
+            "default": 1,
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Items",
+            "type": "integer"
+          },
+          "points": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 500.0,
+            "title": "Points",
+            "type": "number"
+          },
+          "team_id": {
+            "format": "uuid",
+            "title": "Team Id",
+            "type": "string"
+          },
+          "type": {
+            "const": "add_scope",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "team_id",
+          "epic_id",
+          "points"
+        ],
+        "title": "AddScope",
+        "type": "object"
+      },
+      "AnomalyOut": {
+        "properties": {
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "expected": {
+            "title": "Expected",
+            "type": "number"
+          },
+          "explanation": {
+            "title": "Explanation",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "metric": {
+            "title": "Metric",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "team_id": {
+            "format": "uuid",
+            "title": "Team Id",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "number"
+          },
+          "z_score": {
+            "title": "Z Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "team_id",
+          "metric",
+          "date",
+          "value",
+          "expected",
+          "z_score",
+          "method",
+          "explanation",
+          "status"
+        ],
+        "title": "AnomalyOut",
+        "type": "object"
+      },
+      "AskOut": {
+        "properties": {
+          "chart": {
+            "additionalProperties": true,
+            "title": "Chart",
+            "type": "object"
+          },
+          "citations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "narrative": {
+            "title": "Narrative",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "tool_calls": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Tool Calls",
+            "type": "array"
+          }
+        },
+        "required": [
+          "question",
+          "narrative",
+          "chart",
+          "citations",
+          "tool_calls"
+        ],
+        "title": "AskOut",
+        "type": "object"
+      },
+      "AskRequest": {
+        "properties": {
+          "program_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Id"
+          },
+          "question": {
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question"
+        ],
+        "title": "AskRequest",
+        "type": "object"
+      },
+      "AuditEntry": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Id"
+          },
+          "actor_type": {
+            "title": "Actor Type",
+            "type": "string"
+          },
+          "after": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before"
+          },
+          "entity_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          },
+          "entity_type": {
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          },
+          "suggestion_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggestion Id"
+          }
+        },
+        "required": [
+          "id",
+          "actor_type",
+          "actor_id",
+          "action",
+          "entity_type",
+          "entity_id",
+          "before",
+          "after",
+          "reason",
+          "suggestion_id",
+          "request_id",
+          "occurred_at"
+        ],
+        "title": "AuditEntry",
+        "type": "object"
+      },
+      "AutonomyOut": {
+        "properties": {
+          "levels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Levels",
+            "type": "object"
+          },
+          "policies": {
+            "items": {
+              "$ref": "#/components/schemas/PolicyEntry"
+            },
+            "title": "Policies",
+            "type": "array"
+          },
+          "program_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Id"
+          }
+        },
+        "required": [
+          "program_id",
+          "policies",
+          "levels"
+        ],
+        "title": "AutonomyOut",
+        "type": "object"
+      },
+      "AutonomyUpdate": {
+        "properties": {
+          "levels": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Levels",
+            "type": "object"
+          },
+          "program_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Id"
+          }
+        },
+        "required": [
+          "levels"
+        ],
+        "title": "AutonomyUpdate",
+        "type": "object"
+      },
+      "BreakdownOut": {
+        "properties": {
+          "epic_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epic Id"
+          },
+          "stories": {
+            "items": {
+              "$ref": "#/components/schemas/ProposedStory"
+            },
+            "title": "Stories",
+            "type": "array"
+          },
+          "suggestion_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Suggestion Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "epic_id",
+          "stories",
+          "suggestion_ids"
+        ],
+        "title": "BreakdownOut",
+        "type": "object"
+      },
+      "BreakdownRequest": {
+        "properties": {
+          "epic_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epic Id"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "maxLength": 8000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          }
+        },
+        "title": "BreakdownRequest",
+        "type": "object"
+      },
+      "BriefingItem": {
+        "properties": {
+          "accept_probability": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accept Probability"
+          },
+          "drivers": {
+            "items": {
+              "$ref": "#/components/schemas/Driver"
+            },
+            "title": "Drivers",
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "recommended_action": {
+            "$ref": "#/components/schemas/RecommendedAction"
+          },
+          "severity": {
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "why": {
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "rank",
+          "kind",
+          "title",
+          "why",
+          "severity",
+          "drivers",
+          "evidence",
+          "recommended_action"
+        ],
+        "title": "BriefingItem",
+        "type": "object"
+      },
+      "BriefingOut": {
+        "properties": {
+          "drafted_by": {
+            "title": "Drafted By",
+            "type": "string"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BriefingItem"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "generated_at",
+          "items",
+          "drafted_by"
+        ],
+        "title": "BriefingOut",
+        "type": "object"
+      },
+      "CandidateOut": {
+        "properties": {
+          "explanation": {
+            "title": "Explanation",
+            "type": "string"
+          },
+          "factors": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Factors",
+            "type": "object"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "person_id": {
+            "format": "uuid",
+            "title": "Person Id",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "team_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Team Id"
+          },
+          "utilisation": {
+            "title": "Utilisation",
+            "type": "number"
+          }
+        },
+        "required": [
+          "person_id",
+          "name",
+          "team_id",
+          "score",
+          "factors",
+          "explanation",
+          "utilisation"
+        ],
+        "title": "CandidateOut",
+        "type": "object"
+      },
+      "CandidatesOut": {
+        "properties": {
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateOut"
+            },
+            "title": "Candidates",
+            "type": "array"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "required_skills": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Required Skills",
+            "type": "object"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Weights",
+            "type": "object"
+          },
+          "work_item_id": {
+            "format": "uuid",
+            "title": "Work Item Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_item_id",
+          "key",
+          "title",
+          "required_skills",
+          "weights",
+          "candidates"
+        ],
+        "title": "CandidatesOut",
+        "type": "object"
+      },
+      "CapacityChange": {
+        "properties": {
+          "factor": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 3.0,
+            "title": "Factor",
+            "type": "number"
+          },
+          "team_id": {
+            "format": "uuid",
+            "title": "Team Id",
+            "type": "string"
+          },
+          "type": {
+            "const": "capacity_change",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "team_id",
+          "factor"
+        ],
+        "title": "CapacityChange",
+        "type": "object"
+      },
+      "Citation": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "work_item",
+              "epic",
+              "initiative",
+              "document",
+              "decision",
+              "risk",
+              "person",
+              "team",
+              "milestone",
+              "forecast",
+              "anomaly",
+              "metric",
+              "feedback",
+              "theme",
+              "prediction",
+              "program",
+              "suggestion"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id",
+          "label"
+        ],
+        "title": "Citation",
+        "type": "object"
+      },
+      "DateShift": {
+        "properties": {
+          "days": {
+            "maximum": 180.0,
+            "minimum": -120.0,
+            "title": "Days",
+            "type": "integer"
+          },
+          "type": {
+            "const": "date_shift",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "days"
+        ],
+        "title": "DateShift",
+        "type": "object"
+      },
       "DemoUser": {
         "properties": {
           "email": {
@@ -32,6 +850,378 @@
         "title": "DemoUser",
         "type": "object"
       },
+      "Driver": {
+        "properties": {
+          "contribution": {
+            "title": "Contribution",
+            "type": "number"
+          },
+          "feature": {
+            "title": "Feature",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "feature",
+          "contribution",
+          "label"
+        ],
+        "title": "Driver",
+        "type": "object"
+      },
+      "ForecastBand": {
+        "properties": {
+          "on_time_probability": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "On Time Probability"
+          },
+          "p50": {
+            "format": "date",
+            "title": "P50",
+            "type": "string"
+          },
+          "p80": {
+            "format": "date",
+            "title": "P80",
+            "type": "string"
+          },
+          "p95": {
+            "format": "date",
+            "title": "P95",
+            "type": "string"
+          }
+        },
+        "required": [
+          "p50",
+          "p80",
+          "p95"
+        ],
+        "title": "ForecastBand",
+        "type": "object"
+      },
+      "ForecastOut": {
+        "properties": {
+          "assumptions": {
+            "additionalProperties": true,
+            "title": "Assumptions",
+            "type": "object"
+          },
+          "epic_p80": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Epic P80",
+            "type": "object"
+          },
+          "histogram": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Histogram",
+            "type": "array"
+          },
+          "milestone": {
+            "title": "Milestone",
+            "type": "string"
+          },
+          "milestone_id": {
+            "format": "uuid",
+            "title": "Milestone Id",
+            "type": "string"
+          },
+          "on_time_probability": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "On Time Probability"
+          },
+          "p50": {
+            "format": "date",
+            "title": "P50",
+            "type": "string"
+          },
+          "p80": {
+            "format": "date",
+            "title": "P80",
+            "type": "string"
+          },
+          "p95": {
+            "format": "date",
+            "title": "P95",
+            "type": "string"
+          },
+          "previous": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ForecastBand"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "previous_run_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Run At"
+          },
+          "run_at": {
+            "format": "date-time",
+            "title": "Run At",
+            "type": "string"
+          },
+          "target_date": {
+            "format": "date",
+            "title": "Target Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "milestone_id",
+          "milestone",
+          "target_date",
+          "p50",
+          "p80",
+          "p95",
+          "on_time_probability",
+          "histogram",
+          "epic_p80",
+          "assumptions",
+          "run_at",
+          "previous",
+          "previous_run_at"
+        ],
+        "title": "ForecastOut",
+        "type": "object"
+      },
+      "GraphEdge": {
+        "properties": {
+          "critical": {
+            "title": "Critical",
+            "type": "boolean"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "level": {
+            "title": "Level",
+            "type": "string"
+          },
+          "source": {
+            "format": "uuid",
+            "title": "Source",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "target": {
+            "format": "uuid",
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "target",
+          "kind",
+          "status",
+          "level",
+          "critical"
+        ],
+        "title": "GraphEdge",
+        "type": "object"
+      },
+      "GraphNode": {
+        "properties": {
+          "critical": {
+            "title": "Critical",
+            "type": "boolean"
+          },
+          "duration_days": {
+            "title": "Duration Days",
+            "type": "number"
+          },
+          "epic_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epic Id"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          },
+          "kind": {
+            "enum": [
+              "epic",
+              "work_item"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "open_items": {
+            "title": "Open Items",
+            "type": "integer"
+          },
+          "risk": {
+            "title": "Risk",
+            "type": "number"
+          },
+          "scope_points": {
+            "title": "Scope Points",
+            "type": "number"
+          },
+          "slack_days": {
+            "title": "Slack Days",
+            "type": "number"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "team": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Team"
+          },
+          "team_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Team Id"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "label",
+          "key",
+          "team_id",
+          "team",
+          "status",
+          "risk",
+          "scope_points",
+          "open_items",
+          "duration_days",
+          "slack_days",
+          "critical"
+        ],
+        "title": "GraphNode",
+        "type": "object"
+      },
+      "GraphOut": {
+        "properties": {
+          "critical_path": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Critical Path",
+            "type": "array"
+          },
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/GraphEdge"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "finish_days": {
+            "title": "Finish Days",
+            "type": "number"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/GraphNode"
+            },
+            "title": "Nodes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "nodes",
+          "edges",
+          "critical_path",
+          "finish_days"
+        ],
+        "title": "GraphOut",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -43,6 +1233,402 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HealthDriver": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "subscore": {
+            "title": "Subscore",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "subscore",
+          "label"
+        ],
+        "title": "HealthDriver",
+        "type": "object"
+      },
+      "HealthOut": {
+        "examples": [
+          {
+            "computed_at": "2026-11-22",
+            "delta_7d": -6.1,
+            "drivers": [],
+            "score": 72.6,
+            "subscores": {
+              "dependencies": 60,
+              "quality": 83,
+              "schedule": 70,
+              "scope": 79,
+              "team": 68
+            },
+            "trend": [
+              {
+                "date": "2026-11-21",
+                "score": 78.7
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "computed_at": {
+            "format": "date",
+            "title": "Computed At",
+            "type": "string"
+          },
+          "delta_7d": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta 7D"
+          },
+          "drivers": {
+            "items": {
+              "$ref": "#/components/schemas/HealthDriver"
+            },
+            "title": "Drivers",
+            "type": "array"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "subscores": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Subscores",
+            "type": "object"
+          },
+          "trend": {
+            "items": {
+              "$ref": "#/components/schemas/TrendPoint"
+            },
+            "title": "Trend",
+            "type": "array"
+          }
+        },
+        "required": [
+          "score",
+          "delta_7d",
+          "subscores",
+          "trend",
+          "drivers",
+          "computed_at"
+        ],
+        "title": "HealthOut",
+        "type": "object"
+      },
+      "ImpactOut": {
+        "properties": {
+          "affected": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Affected",
+            "type": "array"
+          },
+          "baseline_p80": {
+            "format": "date",
+            "title": "Baseline P80",
+            "type": "string"
+          },
+          "delta_days": {
+            "title": "Delta Days",
+            "type": "integer"
+          },
+          "entity_id": {
+            "format": "uuid",
+            "title": "Entity Id",
+            "type": "string"
+          },
+          "narrative": {
+            "title": "Narrative",
+            "type": "string"
+          },
+          "new_p80": {
+            "format": "date",
+            "title": "New P80",
+            "type": "string"
+          },
+          "slip_days": {
+            "title": "Slip Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "entity_id",
+          "slip_days",
+          "affected",
+          "baseline_p80",
+          "new_p80",
+          "delta_days",
+          "narrative"
+        ],
+        "title": "ImpactOut",
+        "type": "object"
+      },
+      "ImpactRequest": {
+        "properties": {
+          "entity_id": {
+            "format": "uuid",
+            "title": "Entity Id",
+            "type": "string"
+          },
+          "slip_days": {
+            "maximum": 120.0,
+            "minimum": 1.0,
+            "title": "Slip Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "entity_id",
+          "slip_days"
+        ],
+        "title": "ImpactRequest",
+        "type": "object"
+      },
+      "InitiativeCard": {
+        "properties": {
+          "dependency_count": {
+            "title": "Dependency Count",
+            "type": "integer"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "epics": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Epics",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "objective": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Objective"
+          },
+          "rice": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Rice",
+            "type": "object"
+          },
+          "risk": {
+            "title": "Risk",
+            "type": "number"
+          },
+          "roadmap_bucket": {
+            "enum": [
+              "now",
+              "next",
+              "later"
+            ],
+            "title": "Roadmap Bucket",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "target_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Date"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "wsjf": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Wsjf",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "roadmap_bucket",
+          "rice",
+          "wsjf",
+          "target_date",
+          "status",
+          "objective",
+          "dependency_count",
+          "risk",
+          "epics"
+        ],
+        "title": "InitiativeCard",
+        "type": "object"
+      },
+      "InitiativePatch": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "rice": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rice"
+          },
+          "roadmap_bucket": {
+            "anyOf": [
+              {
+                "enum": [
+                  "now",
+                  "next",
+                  "later"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Roadmap Bucket"
+          },
+          "wsjf": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wsjf"
+          }
+        },
+        "title": "InitiativePatch",
+        "type": "object"
+      },
+      "LearningStats": {
+        "properties": {
+          "acceptance_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptance Rate"
+          },
+          "by_type": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            "title": "By Type",
+            "type": "object"
+          },
+          "default_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Default Weights",
+            "type": "object"
+          },
+          "learned_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Learned Weights",
+            "type": "object"
+          },
+          "style_examples": {
+            "title": "Style Examples",
+            "type": "integer"
+          },
+          "suggestions_seen": {
+            "title": "Suggestions Seen",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "suggestions_seen",
+          "acceptance_rate",
+          "by_type",
+          "default_weights",
+          "learned_weights",
+          "style_examples"
+        ],
+        "title": "LearningStats",
         "type": "object"
       },
       "Liveness": {
@@ -242,6 +1828,145 @@
         "title": "MemberUpdate",
         "type": "object"
       },
+      "MetricPoint": {
+        "properties": {
+          "anomaly": {
+            "default": false,
+            "title": "Anomaly",
+            "type": "boolean"
+          },
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "value"
+        ],
+        "title": "MetricPoint",
+        "type": "object"
+      },
+      "MetricSeries": {
+        "properties": {
+          "metric": {
+            "title": "Metric",
+            "type": "string"
+          },
+          "points": {
+            "items": {
+              "$ref": "#/components/schemas/MetricPoint"
+            },
+            "title": "Points",
+            "type": "array"
+          },
+          "team": {
+            "title": "Team",
+            "type": "string"
+          },
+          "team_id": {
+            "format": "uuid",
+            "title": "Team Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "team_id",
+          "team",
+          "metric",
+          "points"
+        ],
+        "title": "MetricSeries",
+        "type": "object"
+      },
+      "NotificationOut": {
+        "properties": {
+          "body": {
+            "title": "Body",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Link"
+          },
+          "read_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Read At"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "body",
+          "link",
+          "read_at",
+          "created_at"
+        ],
+        "title": "NotificationOut",
+        "type": "object"
+      },
+      "NudgeRunOut": {
+        "properties": {
+          "auto_executed": {
+            "title": "Auto Executed",
+            "type": "integer"
+          },
+          "stalled": {
+            "title": "Stalled",
+            "type": "integer"
+          },
+          "suggestions_created": {
+            "title": "Suggestions Created",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "stalled",
+          "suggestions_created",
+          "auto_executed"
+        ],
+        "title": "NudgeRunOut",
+        "type": "object"
+      },
       "OrgOut": {
         "properties": {
           "id": {
@@ -291,6 +2016,398 @@
         "title": "OrgSettingsUpdate",
         "type": "object"
       },
+      "PersonLoad": {
+        "properties": {
+          "assigned_points": {
+            "title": "Assigned Points",
+            "type": "number"
+          },
+          "capacity_points": {
+            "title": "Capacity Points",
+            "type": "number"
+          },
+          "growth_goals": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Growth Goals",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "overloaded": {
+            "title": "Overloaded",
+            "type": "boolean"
+          },
+          "person_id": {
+            "format": "uuid",
+            "title": "Person Id",
+            "type": "string"
+          },
+          "skills": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Skills",
+            "type": "object"
+          },
+          "team": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Team"
+          },
+          "team_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Team Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "utilisation": {
+            "title": "Utilisation",
+            "type": "number"
+          },
+          "weeks": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Weeks",
+            "type": "array"
+          }
+        },
+        "required": [
+          "person_id",
+          "name",
+          "title",
+          "team_id",
+          "team",
+          "utilisation",
+          "assigned_points",
+          "capacity_points",
+          "overloaded",
+          "skills",
+          "growth_goals",
+          "weeks"
+        ],
+        "title": "PersonLoad",
+        "type": "object"
+      },
+      "PersonaOut": {
+        "properties": {
+          "delegation_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Delegation Weights",
+            "type": "object"
+          },
+          "escalation_rules": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Escalation Rules",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "priorities": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Priorities",
+            "type": "array"
+          },
+          "risk_tolerance": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Risk Tolerance",
+            "type": "string"
+          },
+          "style_examples": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Style Examples",
+            "type": "array"
+          },
+          "tone": {
+            "enum": [
+              "concise",
+              "detailed",
+              "formal",
+              "friendly"
+            ],
+            "title": "Tone",
+            "type": "string"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          },
+          "working_hours": {
+            "additionalProperties": true,
+            "title": "Working Hours",
+            "type": "object"
+          }
+        },
+        "required": [
+          "user_id",
+          "name",
+          "priorities",
+          "style_examples",
+          "tone",
+          "risk_tolerance",
+          "escalation_rules",
+          "working_hours",
+          "delegation_weights"
+        ],
+        "title": "PersonaOut",
+        "type": "object"
+      },
+      "PersonaUpdate": {
+        "properties": {
+          "escalation_rules": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 20,
+            "title": "Escalation Rules",
+            "type": "array"
+          },
+          "priorities": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 12,
+            "title": "Priorities",
+            "type": "array"
+          },
+          "risk_tolerance": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Risk Tolerance",
+            "type": "string"
+          },
+          "style_examples": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Style Examples",
+            "type": "array"
+          },
+          "tone": {
+            "enum": [
+              "concise",
+              "detailed",
+              "formal",
+              "friendly"
+            ],
+            "title": "Tone",
+            "type": "string"
+          },
+          "working_hours": {
+            "additionalProperties": true,
+            "title": "Working Hours",
+            "type": "object"
+          }
+        },
+        "required": [
+          "priorities",
+          "style_examples",
+          "tone",
+          "risk_tolerance"
+        ],
+        "title": "PersonaUpdate",
+        "type": "object"
+      },
+      "PolicyEntry": {
+        "properties": {
+          "action_type": {
+            "title": "Action Type",
+            "type": "string"
+          },
+          "default_level": {
+            "title": "Default Level",
+            "type": "integer"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "level": {
+            "maximum": 4.0,
+            "minimum": 1.0,
+            "title": "Level",
+            "type": "integer"
+          },
+          "max_level": {
+            "title": "Max Level",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "action_type",
+          "level",
+          "default_level",
+          "max_level",
+          "description"
+        ],
+        "title": "PolicyEntry",
+        "type": "object"
+      },
+      "ProgramOut": {
+        "properties": {
+          "health_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Health Weights",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "objective": {
+            "title": "Objective",
+            "type": "string"
+          },
+          "owner_user_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner User Id"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "target_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Date"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "objective",
+          "status",
+          "target_date",
+          "owner_user_id",
+          "health_weights"
+        ],
+        "title": "ProgramOut",
+        "type": "object"
+      },
+      "ProposedStory": {
+        "properties": {
+          "acceptance_criteria": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Acceptance Criteria",
+            "type": "array"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "estimate_days": {
+            "title": "Estimate Days",
+            "type": "number"
+          },
+          "p10_days": {
+            "title": "P10 Days",
+            "type": "number"
+          },
+          "p90_days": {
+            "title": "P90 Days",
+            "type": "number"
+          },
+          "similar": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Similar",
+            "type": "array"
+          },
+          "story_points": {
+            "title": "Story Points",
+            "type": "number"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "acceptance_criteria",
+          "type",
+          "story_points",
+          "estimate_days",
+          "p10_days",
+          "p90_days",
+          "similar"
+        ],
+        "title": "ProposedStory",
+        "type": "object"
+      },
       "Readiness": {
         "properties": {
           "checks": {
@@ -316,6 +2433,808 @@
         "title": "Readiness",
         "type": "object"
       },
+      "Reassign": {
+        "properties": {
+          "to_person_id": {
+            "format": "uuid",
+            "title": "To Person Id",
+            "type": "string"
+          },
+          "type": {
+            "const": "reassign",
+            "title": "Type",
+            "type": "string"
+          },
+          "work_item_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Work Item Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "type",
+          "work_item_ids",
+          "to_person_id"
+        ],
+        "title": "Reassign",
+        "type": "object"
+      },
+      "RebalanceMove": {
+        "properties": {
+          "explanation": {
+            "title": "Explanation",
+            "type": "string"
+          },
+          "factors": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Factors",
+            "type": "object"
+          },
+          "from_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Name"
+          },
+          "from_person_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Person Id"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "points": {
+            "title": "Points",
+            "type": "number"
+          },
+          "risk": {
+            "title": "Risk",
+            "type": "number"
+          },
+          "suggestion_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggestion Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "to_name": {
+            "title": "To Name",
+            "type": "string"
+          },
+          "to_person_id": {
+            "format": "uuid",
+            "title": "To Person Id",
+            "type": "string"
+          },
+          "work_item_id": {
+            "format": "uuid",
+            "title": "Work Item Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_item_id",
+          "key",
+          "title",
+          "from_person_id",
+          "from_name",
+          "to_person_id",
+          "to_name",
+          "points",
+          "risk",
+          "explanation",
+          "factors",
+          "suggestion_id"
+        ],
+        "title": "RebalanceMove",
+        "type": "object"
+      },
+      "RebalanceOut": {
+        "properties": {
+          "baseline_p80": {
+            "title": "Baseline P80",
+            "type": "string"
+          },
+          "delta_days": {
+            "title": "Delta Days",
+            "type": "integer"
+          },
+          "moves": {
+            "items": {
+              "$ref": "#/components/schemas/RebalanceMove"
+            },
+            "title": "Moves",
+            "type": "array"
+          },
+          "narrative": {
+            "title": "Narrative",
+            "type": "string"
+          },
+          "plan_id": {
+            "format": "uuid",
+            "title": "Plan Id",
+            "type": "string"
+          },
+          "scenario_p80": {
+            "title": "Scenario P80",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_id",
+          "moves",
+          "baseline_p80",
+          "scenario_p80",
+          "delta_days",
+          "narrative"
+        ],
+        "title": "RebalanceOut",
+        "type": "object"
+      },
+      "RebalanceRequest": {
+        "properties": {
+          "program_id": {
+            "format": "uuid",
+            "title": "Program Id",
+            "type": "string"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          }
+        },
+        "required": [
+          "program_id"
+        ],
+        "title": "RebalanceRequest",
+        "type": "object"
+      },
+      "RecommendedAction": {
+        "properties": {
+          "href": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Href"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "suggestion_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggestion Id"
+          }
+        },
+        "required": [
+          "suggestion_id",
+          "label"
+        ],
+        "title": "RecommendedAction",
+        "type": "object"
+      },
+      "RemoveScope": {
+        "properties": {
+          "type": {
+            "const": "remove_scope",
+            "title": "Type",
+            "type": "string"
+          },
+          "work_item_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Work Item Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "type",
+          "work_item_ids"
+        ],
+        "title": "RemoveScope",
+        "type": "object"
+      },
+      "RespondRequest": {
+        "properties": {
+          "action": {
+            "enum": [
+              "accept",
+              "reject",
+              "edit"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "edited_payload": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edited Payload"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "action"
+        ],
+        "title": "RespondRequest",
+        "type": "object"
+      },
+      "RiskCreate": {
+        "properties": {
+          "description": {
+            "default": "",
+            "title": "Description",
+            "type": "string"
+          },
+          "impact": {
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Impact",
+            "type": "integer"
+          },
+          "linked_entities": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Linked Entities",
+            "type": "array"
+          },
+          "mitigation": {
+            "default": "",
+            "title": "Mitigation",
+            "type": "string"
+          },
+          "owner_person_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Person Id"
+          },
+          "probability": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Probability",
+            "type": "number"
+          },
+          "program_id": {
+            "format": "uuid",
+            "title": "Program Id",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 3,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "program_id",
+          "title",
+          "probability",
+          "impact"
+        ],
+        "title": "RiskCreate",
+        "type": "object"
+      },
+      "RiskOut": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "impact": {
+            "title": "Impact",
+            "type": "integer"
+          },
+          "linked_entities": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Linked Entities",
+            "type": "array"
+          },
+          "mitigation": {
+            "title": "Mitigation",
+            "type": "string"
+          },
+          "owner_person_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Person Id"
+          },
+          "probability": {
+            "title": "Probability",
+            "type": "number"
+          },
+          "program_id": {
+            "format": "uuid",
+            "title": "Program Id",
+            "type": "string"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "number"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "program_id",
+          "title",
+          "description",
+          "probability",
+          "impact",
+          "severity",
+          "owner_person_id",
+          "mitigation",
+          "status",
+          "source",
+          "linked_entities",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "RiskOut",
+        "type": "object"
+      },
+      "RiskPatch": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "impact": {
+            "anyOf": [
+              {
+                "maximum": 5.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impact"
+          },
+          "mitigation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mitigation"
+          },
+          "owner_person_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Person Id"
+          },
+          "probability": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Probability"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "open",
+                  "mitigating",
+                  "closed"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "title": "RiskPatch",
+        "type": "object"
+      },
+      "RiskyItem": {
+        "properties": {
+          "drivers": {
+            "items": {
+              "$ref": "#/components/schemas/Driver"
+            },
+            "title": "Drivers",
+            "type": "array"
+          },
+          "due_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due Date"
+          },
+          "epic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epic"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "model_version": {
+            "title": "Model Version",
+            "type": "string"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner"
+          },
+          "owner_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Id"
+          },
+          "probability": {
+            "title": "Probability",
+            "type": "number"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "team": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Team"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "work_item_id": {
+            "format": "uuid",
+            "title": "Work Item Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_item_id",
+          "key",
+          "title",
+          "epic",
+          "team",
+          "status",
+          "owner",
+          "owner_id",
+          "due_date",
+          "probability",
+          "drivers",
+          "model_version"
+        ],
+        "title": "RiskyItem",
+        "type": "object"
+      },
+      "RoadmapOut": {
+        "properties": {
+          "buckets": {
+            "additionalProperties": {
+              "items": {
+                "$ref": "#/components/schemas/InitiativeCard"
+              },
+              "type": "array"
+            },
+            "title": "Buckets",
+            "type": "object"
+          },
+          "program_id": {
+            "format": "uuid",
+            "title": "Program Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "program_id",
+          "buckets"
+        ],
+        "title": "RoadmapOut",
+        "type": "object"
+      },
+      "ScenarioCreate": {
+        "properties": {
+          "changes": {
+            "items": {
+              "discriminator": {
+                "mapping": {
+                  "add_scope": "#/components/schemas/AddScope",
+                  "capacity_change": "#/components/schemas/CapacityChange",
+                  "date_shift": "#/components/schemas/DateShift",
+                  "reassign": "#/components/schemas/Reassign",
+                  "remove_scope": "#/components/schemas/RemoveScope"
+                },
+                "propertyName": "type"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AddScope"
+                },
+                {
+                  "$ref": "#/components/schemas/RemoveScope"
+                },
+                {
+                  "$ref": "#/components/schemas/CapacityChange"
+                },
+                {
+                  "$ref": "#/components/schemas/Reassign"
+                },
+                {
+                  "$ref": "#/components/schemas/DateShift"
+                }
+              ]
+            },
+            "title": "Changes",
+            "type": "array"
+          },
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "program_id": {
+            "format": "uuid",
+            "title": "Program Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "program_id",
+          "name",
+          "changes"
+        ],
+        "title": "ScenarioCreate",
+        "type": "object"
+      },
+      "ScenarioOut": {
+        "properties": {
+          "changes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Changes",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "program_id": {
+            "format": "uuid",
+            "title": "Program Id",
+            "type": "string"
+          },
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "program_id",
+          "name",
+          "changes",
+          "result",
+          "created_by",
+          "created_at"
+        ],
+        "title": "ScenarioOut",
+        "type": "object"
+      },
       "SessionResponse": {
         "properties": {
           "csrf_token": {
@@ -336,6 +3255,528 @@
           "csrf_token"
         ],
         "title": "SessionResponse",
+        "type": "object"
+      },
+      "SimulateOut": {
+        "properties": {
+          "affected_epics": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Affected Epics",
+            "type": "array"
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/ForecastBand"
+          },
+          "baseline_histogram": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Baseline Histogram",
+            "type": "array"
+          },
+          "capacity_delta": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Capacity Delta",
+            "type": "object"
+          },
+          "delta_days": {
+            "title": "Delta Days",
+            "type": "integer"
+          },
+          "histogram": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Histogram",
+            "type": "array"
+          },
+          "narrative": {
+            "title": "Narrative",
+            "type": "string"
+          },
+          "risk_delta": {
+            "title": "Risk Delta",
+            "type": "number"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/ForecastBand"
+          },
+          "target_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Date"
+          }
+        },
+        "required": [
+          "baseline",
+          "scenario",
+          "target_date",
+          "delta_days",
+          "risk_delta",
+          "capacity_delta",
+          "affected_epics",
+          "narrative",
+          "histogram",
+          "baseline_histogram"
+        ],
+        "title": "SimulateOut",
+        "type": "object"
+      },
+      "SimulateRequest": {
+        "examples": [
+          {
+            "changes": [
+              {
+                "factor": 1.2,
+                "team_id": "00000000-0000-0000-0000-000000000001",
+                "type": "capacity_change"
+              }
+            ],
+            "program_id": "00000000-0000-0000-0000-000000000000"
+          }
+        ],
+        "properties": {
+          "changes": {
+            "items": {
+              "discriminator": {
+                "mapping": {
+                  "add_scope": "#/components/schemas/AddScope",
+                  "capacity_change": "#/components/schemas/CapacityChange",
+                  "date_shift": "#/components/schemas/DateShift",
+                  "reassign": "#/components/schemas/Reassign",
+                  "remove_scope": "#/components/schemas/RemoveScope"
+                },
+                "propertyName": "type"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AddScope"
+                },
+                {
+                  "$ref": "#/components/schemas/RemoveScope"
+                },
+                {
+                  "$ref": "#/components/schemas/CapacityChange"
+                },
+                {
+                  "$ref": "#/components/schemas/Reassign"
+                },
+                {
+                  "$ref": "#/components/schemas/DateShift"
+                }
+              ]
+            },
+            "maxItems": 50,
+            "title": "Changes",
+            "type": "array"
+          },
+          "program_id": {
+            "format": "uuid",
+            "title": "Program Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "program_id",
+          "changes"
+        ],
+        "title": "SimulateRequest",
+        "type": "object"
+      },
+      "SprintPlanOut": {
+        "properties": {
+          "capacity_points": {
+            "title": "Capacity Points",
+            "type": "number"
+          },
+          "committed_points": {
+            "title": "Committed Points",
+            "type": "number"
+          },
+          "meeting_points": {
+            "title": "Meeting Points",
+            "type": "number"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Notes",
+            "type": "array"
+          },
+          "pto_points": {
+            "title": "Pto Points",
+            "type": "number"
+          },
+          "recommended": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Recommended",
+            "type": "array"
+          },
+          "recommended_commitment": {
+            "title": "Recommended Commitment",
+            "type": "number"
+          },
+          "sprint": {
+            "title": "Sprint",
+            "type": "string"
+          },
+          "stretch": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Stretch",
+            "type": "array"
+          },
+          "team_id": {
+            "format": "uuid",
+            "title": "Team Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "team_id",
+          "sprint",
+          "capacity_points",
+          "pto_points",
+          "meeting_points",
+          "recommended_commitment",
+          "committed_points",
+          "stretch",
+          "recommended",
+          "notes"
+        ],
+        "title": "SprintPlanOut",
+        "type": "object"
+      },
+      "SprintPlanRequest": {
+        "properties": {
+          "sprint_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sprint Id"
+          },
+          "team_id": {
+            "format": "uuid",
+            "title": "Team Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "team_id"
+        ],
+        "title": "SprintPlanRequest",
+        "type": "object"
+      },
+      "SuggestionOut": {
+        "properties": {
+          "agent": {
+            "title": "Agent",
+            "type": "string"
+          },
+          "autonomy_level_required": {
+            "title": "Autonomy Level Required",
+            "type": "integer"
+          },
+          "citations": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "drivers": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Drivers",
+            "type": "array"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "explanation": {
+            "title": "Explanation",
+            "type": "string"
+          },
+          "feedback_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feedback Reason"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "title": "Payload",
+            "type": "object"
+          },
+          "program_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Id"
+          },
+          "responded_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Responded At"
+          },
+          "responded_by": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Responded By"
+          },
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "thread_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thread Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "undone_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Undone At"
+          }
+        },
+        "required": [
+          "id",
+          "program_id",
+          "agent",
+          "type",
+          "title",
+          "payload",
+          "explanation",
+          "drivers",
+          "citations",
+          "autonomy_level_required",
+          "status",
+          "responded_by",
+          "responded_at",
+          "feedback_reason",
+          "result",
+          "created_at",
+          "expires_at",
+          "undone_at",
+          "thread_id"
+        ],
+        "title": "SuggestionOut",
+        "type": "object"
+      },
+      "TeamHealthOut": {
+        "properties": {
+          "after_hours_ratio": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After Hours Ratio"
+          },
+          "message_volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message Volume"
+          },
+          "sentiment_index": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment Index"
+          },
+          "sentiment_trend": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment Trend"
+          },
+          "series": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Series",
+            "type": "array"
+          },
+          "size": {
+            "title": "Size",
+            "type": "integer"
+          },
+          "suppressed": {
+            "title": "Suppressed",
+            "type": "boolean"
+          },
+          "team": {
+            "title": "Team",
+            "type": "string"
+          },
+          "team_id": {
+            "format": "uuid",
+            "title": "Team Id",
+            "type": "string"
+          },
+          "utilisation_mean": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Utilisation Mean"
+          }
+        },
+        "required": [
+          "team_id",
+          "team",
+          "size",
+          "suppressed",
+          "sentiment_index",
+          "sentiment_trend",
+          "after_hours_ratio",
+          "message_volume",
+          "utilisation_mean",
+          "series"
+        ],
+        "title": "TeamHealthOut",
+        "type": "object"
+      },
+      "TrendPoint": {
+        "properties": {
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "score"
+        ],
+        "title": "TrendPoint",
         "type": "object"
       },
       "UserOut": {
@@ -437,6 +3878,43 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "WorkloadOut": {
+        "properties": {
+          "assignment_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Assignment Counts",
+            "type": "object"
+          },
+          "overload_threshold": {
+            "title": "Overload Threshold",
+            "type": "number"
+          },
+          "people": {
+            "items": {
+              "$ref": "#/components/schemas/PersonLoad"
+            },
+            "title": "People",
+            "type": "array"
+          },
+          "weeks": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Weeks",
+            "type": "array"
+          }
+        },
+        "required": [
+          "people",
+          "weeks",
+          "overload_threshold",
+          "assignment_counts"
+        ],
+        "title": "WorkloadOut",
+        "type": "object"
       }
     }
   },
@@ -447,6 +3925,137 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/audit": {
+      "get": {
+        "operationId": "get_audit_api_v1_audit_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "entity_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entity Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "entity_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entity Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "actor_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Actor Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "suggestion_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Suggestion Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "before_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Before Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AuditEntry"
+                  },
+                  "title": "Response Get Audit Api V1 Audit Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Audit",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
     "/api/v1/auth/demo-users": {
       "get": {
         "description": "Lists the seeded demo users. Empty unless demo mode is active.",
@@ -570,6 +4179,757 @@
         ]
       }
     },
+    "/api/v1/autonomy-policy": {
+      "get": {
+        "operationId": "get_autonomy_api_v1_autonomy_policy_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Program Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutonomyOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Autonomy",
+        "tags": [
+          "twin"
+        ]
+      },
+      "put": {
+        "operationId": "put_autonomy_api_v1_autonomy_policy_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutonomyUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutonomyOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Autonomy",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
+    "/api/v1/delegation/candidates/{work_item_id}": {
+      "get": {
+        "operationId": "candidates_api_v1_delegation_candidates__work_item_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "work_item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Work Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CandidatesOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Candidates",
+        "tags": [
+          "delegation"
+        ]
+      }
+    },
+    "/api/v1/delegation/nudges/run": {
+      "post": {
+        "operationId": "run_nudges_api_v1_delegation_nudges_run_post",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NudgeRunOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run Nudges",
+        "tags": [
+          "delegation"
+        ]
+      }
+    },
+    "/api/v1/delegation/rebalance": {
+      "post": {
+        "description": "Plan reassignments off the critical path; each move becomes a suggestion.",
+        "operationId": "rebalance_api_v1_delegation_rebalance_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RebalanceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RebalanceOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rebalance",
+        "tags": [
+          "delegation"
+        ]
+      }
+    },
+    "/api/v1/delegation/workload": {
+      "get": {
+        "description": "Per-person utilisation (team-level work signals only), weekly heatmap and overload flags.",
+        "operationId": "workload_api_v1_delegation_workload_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkloadOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Workload",
+        "tags": [
+          "delegation"
+        ]
+      }
+    },
+    "/api/v1/dependencies/graph": {
+      "get": {
+        "description": "Epics and dependent items with team, status, risk, critical-path flags and slack.",
+        "operationId": "graph_api_v1_dependencies_graph_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Graph",
+        "tags": [
+          "risk"
+        ]
+      }
+    },
+    "/api/v1/dependencies/impact": {
+      "post": {
+        "description": "Cascade of an N-day slip on an epic or work item, with the new launch forecast.",
+        "operationId": "impact_api_v1_dependencies_impact_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImpactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Impact",
+        "tags": [
+          "risk"
+        ]
+      }
+    },
+    "/api/v1/events/stream": {
+      "get": {
+        "description": "`event: domain` messages ({kind, data, at}) for the caller's organisation.",
+        "operationId": "stream_api_v1_events_stream_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Stream",
+        "tags": [
+          "events"
+        ]
+      }
+    },
+    "/api/v1/forecasts/{milestone_id}": {
+      "get": {
+        "operationId": "get_forecast_api_v1_forecasts__milestone_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "milestone_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Milestone Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Forecast",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/forecasts/{milestone_id}/run": {
+      "post": {
+        "operationId": "run_forecast_api_v1_forecasts__milestone_id__run_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "milestone_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Milestone Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run Forecast",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/initiatives/{initiative_id}": {
+      "patch": {
+        "description": "Move an initiative between buckets or rescore it. Every change is audited.",
+        "operationId": "patch_initiative_api_v1_initiatives__initiative_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "initiative_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Initiative Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitiativePatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Patch Initiative Api V1 Initiatives  Initiative Id  Patch",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patch Initiative",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/insights/anomalies": {
+      "get": {
+        "operationId": "anomalies_api_v1_insights_anomalies_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Program Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AnomalyOut"
+                  },
+                  "title": "Response Anomalies Api V1 Insights Anomalies Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Anomalies",
+        "tags": [
+          "insights"
+        ]
+      }
+    },
+    "/api/v1/insights/ask": {
+      "post": {
+        "description": "Natural-language metric question answered through the parameterised metric tool.",
+        "operationId": "ask_api_v1_insights_ask_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AskOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Ask",
+        "tags": [
+          "insights"
+        ]
+      }
+    },
+    "/api/v1/insights/metrics": {
+      "get": {
+        "operationId": "metrics_api_v1_insights_metrics_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "metric",
+            "required": false,
+            "schema": {
+              "default": "velocity",
+              "title": "Metric",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "team_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Team Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MetricSeries"
+                  },
+                  "title": "Response Metrics Api V1 Insights Metrics Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Metrics",
+        "tags": [
+          "insights"
+        ]
+      }
+    },
+    "/api/v1/insights/team-health": {
+      "get": {
+        "description": "Team-level aggregates only. Teams under 5 people are suppressed.",
+        "operationId": "team_health_api_v1_insights_team_health_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TeamHealthOut"
+                  },
+                  "title": "Response Team Health Api V1 Insights Team Health Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Team Health",
+        "tags": [
+          "insights"
+        ]
+      }
+    },
     "/api/v1/members": {
       "get": {
         "operationId": "list_members_api_v1_members_get",
@@ -687,6 +5047,108 @@
         ]
       }
     },
+    "/api/v1/notifications": {
+      "get": {
+        "operationId": "notifications_api_v1_notifications_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "unread",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Unread",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 30,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationOut"
+                  },
+                  "title": "Response Notifications Api V1 Notifications Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Notifications",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
+    "/api/v1/notifications/{notification_id}/read": {
+      "post": {
+        "operationId": "mark_read_api_v1_notifications__notification_id__read_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "notification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Notification Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Mark Read",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
     "/api/v1/org": {
       "get": {
         "operationId": "get_org_api_v1_org_get",
@@ -746,6 +5208,1024 @@
         "summary": "Update Org Settings",
         "tags": [
           "org"
+        ]
+      }
+    },
+    "/api/v1/persona": {
+      "get": {
+        "operationId": "get_persona_api_v1_persona_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonaOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Persona",
+        "tags": [
+          "twin"
+        ]
+      },
+      "put": {
+        "operationId": "put_persona_api_v1_persona_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonaUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonaOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Persona",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
+    "/api/v1/planning/breakdown": {
+      "post": {
+        "description": "Propose stories with acceptance criteria and ML estimates (as create_task suggestions).",
+        "operationId": "breakdown_api_v1_planning_breakdown_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BreakdownRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BreakdownOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Breakdown",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/planning/sprint-plan": {
+      "post": {
+        "operationId": "sprint_plan_api_v1_planning_sprint_plan_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SprintPlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SprintPlanOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sprint Plan",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/programs": {
+      "get": {
+        "operationId": "list_programs_api_v1_programs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProgramOut"
+                  },
+                  "title": "Response List Programs Api V1 Programs Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Programs",
+        "tags": [
+          "program"
+        ]
+      }
+    },
+    "/api/v1/programs/{program_id}": {
+      "get": {
+        "operationId": "get_program_api_v1_programs__program_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgramOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Program",
+        "tags": [
+          "program"
+        ]
+      }
+    },
+    "/api/v1/programs/{program_id}/activity": {
+      "get": {
+        "operationId": "program_activity_api_v1_programs__program_id__activity_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ActivityItem"
+                  },
+                  "title": "Response Program Activity Api V1 Programs  Program Id  Activity Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Program Activity",
+        "tags": [
+          "program"
+        ]
+      }
+    },
+    "/api/v1/programs/{program_id}/briefing": {
+      "get": {
+        "description": "Top three attention items, ranked by severity and the TPM's learned preferences.",
+        "operationId": "program_briefing_api_v1_programs__program_id__briefing_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "refresh",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Refresh",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefingOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Program Briefing",
+        "tags": [
+          "program"
+        ]
+      }
+    },
+    "/api/v1/programs/{program_id}/health": {
+      "get": {
+        "description": "Health score, five sub-scores, a 30-day trend and the drivers behind it.",
+        "operationId": "program_health_api_v1_programs__program_id__health_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Program Health",
+        "tags": [
+          "program"
+        ]
+      }
+    },
+    "/api/v1/risk/register": {
+      "get": {
+        "operationId": "register_api_v1_risk_register_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RiskOut"
+                  },
+                  "title": "Response Register Api V1 Risk Register Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Register",
+        "tags": [
+          "risk"
+        ]
+      },
+      "post": {
+        "operationId": "create_risk_api_v1_risk_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Risk",
+        "tags": [
+          "risk"
+        ]
+      }
+    },
+    "/api/v1/risk/register/{risk_id}": {
+      "patch": {
+        "operationId": "update_risk_api_v1_risk_register__risk_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "risk_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Risk Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Risk",
+        "tags": [
+          "risk"
+        ]
+      }
+    },
+    "/api/v1/risk/work-items": {
+      "get": {
+        "description": "Open items with delay probability and SHAP drivers, highest risk first.",
+        "operationId": "risky_items_api_v1_risk_work_items_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "min_score",
+            "required": false,
+            "schema": {
+              "default": 0.0,
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Min Score",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RiskyItem"
+                  },
+                  "title": "Response Risky Items Api V1 Risk Work Items Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Risky Items",
+        "tags": [
+          "risk"
+        ]
+      }
+    },
+    "/api/v1/roadmap": {
+      "get": {
+        "operationId": "get_roadmap_api_v1_roadmap_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Program Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoadmapOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Roadmap",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/scenarios": {
+      "get": {
+        "operationId": "list_scenarios_api_v1_scenarios_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Program Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ScenarioOut"
+                  },
+                  "title": "Response List Scenarios Api V1 Scenarios Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Scenarios",
+        "tags": [
+          "planning"
+        ]
+      },
+      "post": {
+        "operationId": "save_scenario_api_v1_scenarios_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save Scenario",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/scenarios/simulate": {
+      "post": {
+        "description": "Run the Monte Carlo forecast with what-if changes (10,000 simulations).",
+        "operationId": "simulate_api_v1_scenarios_simulate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimulateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulateOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Simulate",
+        "tags": [
+          "planning"
+        ]
+      }
+    },
+    "/api/v1/suggestions": {
+      "get": {
+        "operationId": "list_suggestions_api_v1_suggestions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": "pending",
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "program_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Program Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SuggestionOut"
+                  },
+                  "title": "Response List Suggestions Api V1 Suggestions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Suggestions",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
+    "/api/v1/suggestions/{suggestion_id}": {
+      "get": {
+        "operationId": "get_suggestion_api_v1_suggestions__suggestion_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "suggestion_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Suggestion Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Suggestion",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
+    "/api/v1/suggestions/{suggestion_id}/respond": {
+      "post": {
+        "description": "Accept, edit or reject. Accepting runs the Action Executor and teaches the twin.",
+        "operationId": "respond_api_v1_suggestions__suggestion_id__respond_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "suggestion_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Suggestion Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Respond",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
+    "/api/v1/suggestions/{suggestion_id}/undo": {
+      "post": {
+        "description": "Reverse an executed, reversible action within 24 hours.",
+        "operationId": "undo_api_v1_suggestions__suggestion_id__undo_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "suggestion_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Suggestion Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Undo",
+        "tags": [
+          "twin"
+        ]
+      }
+    },
+    "/api/v1/twin/learning": {
+      "get": {
+        "operationId": "learning_api_v1_twin_learning_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LearningStats"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Learning",
+        "tags": [
+          "twin"
         ]
       }
     },

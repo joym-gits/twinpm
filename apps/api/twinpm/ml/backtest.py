@@ -37,8 +37,10 @@ def run(data: ProgramData, model: delay.DelayModel, sims: int = 2000) -> dict[st
             team = g["team_id"].iloc[0]
             lo = pd.Timestamp(t) - pd.Timedelta(days=42)
             done = past.items[(past.items["team_id"] == team) & (past.items["done_at"] > lo)]
-            share = float(done.loc[done["epic_id"] == epic_id, "story_points"].sum()
-                          / max(done["story_points"].sum(), 1.0))
+            share = float(
+                done.loc[done["epic_id"] == epic_id, "story_points"].sum()
+                / max(done["story_points"].sum(), 1.0)
+            )
             inp.capacity_factor[team] = max(share, 0.05) / PROGRAM_ALLOCATION
             res = simulate(inp, sims)
             hit = end.date() <= res.p80

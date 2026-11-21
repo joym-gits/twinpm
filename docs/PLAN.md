@@ -33,9 +33,9 @@ Tracks Section 14 of `BUILD_SPEC.md`. A phase is checked only after its gate ran
 - [x] **Gate:** Section 12 ML tests pass
 
 ## Phase 5: Core APIs
-- [ ] Program/health/briefing, roadmap, scenarios, delegation, risk, dependencies, forecasts, insights
-- [ ] Suggestions + Action Executor + policy engine + undo, SSE events
-- [ ] **Gate:** router integration tests pass; OpenAPI complete
+- [x] Program/health/briefing, roadmap, scenarios, delegation, risk, dependencies, forecasts, insights
+- [x] Suggestions + Action Executor + policy engine + undo, SSE events
+- [x] **Gate:** router integration tests pass; OpenAPI complete
 
 ## Phase 6: LLM, agents, RAG
 - [ ] Model factory (ChatAnthropic / DemoChatModel), tools, specialist subgraphs, supervisor + policy_gate + interrupt()

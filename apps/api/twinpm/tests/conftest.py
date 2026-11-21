@@ -44,6 +44,8 @@ def _boot_services() -> None:
         LOG_LEVEL="WARNING",
         MODELS_DIR=os.environ.get("TEST_MODELS_DIR", str(Path(__file__).parent / ".models")),
         FERNET_KEY="8Tb2t8Qd5Q3Hb3n5mTqg9Zg6n8wW1v1J2XoUeYvVZ0s=",
+        RATE_LIMIT_AUTH_PER_MINUTE="1000",
+        RATE_LIMIT_AI_PER_MINUTE="1000",
     )
 
 
@@ -92,3 +94,44 @@ async def client(app: object) -> AsyncIterator[object]:
 @pytest.fixture
 def unique() -> str:
     return uuid.uuid4().hex[:8]
+
+
+DEMO_PASSWORD = "Demo-password-for-tests-1"
+
+
+@pytest.fixture(scope="session")
+async def seeded() -> dict[str, object]:
+    """NovaPay seeded, models trained and ML outputs refreshed (once per test session)."""
+    from sqlalchemy import select
+
+    from twinpm.db.models import Organization, User
+    from twinpm.db.session import get_sessionmaker
+    from twinpm.seed.generator import generate
+    from twinpm.seed.loader import load
+    from twinpm.services.ml_jobs import train_and_refresh
+
+    async with get_sessionmaker()() as s:
+        await load(s, generate(42), DEMO_PASSWORD)
+        org_id = (
+            await s.execute(select(Organization.id).where(Organization.slug == "novapay"))
+        ).scalar_one()
+        await train_and_refresh(s, org_id)
+        users = {
+            u.email.split("@")[0]: u.id
+            for u in (await s.execute(select(User).where(User.org_id == org_id))).scalars()
+        }
+    return {"org_id": org_id, "users": users}
+
+
+@pytest.fixture
+async def priya(client: object, seeded: dict[str, object]) -> object:
+    """An HTTP client logged in as Priya (TPM) with the CSRF header set."""
+    import httpx
+
+    c: httpx.AsyncClient = client  # type: ignore[assignment]
+    r = await c.post(
+        "/api/v1/auth/login", json={"email": "priya@novapay.example", "password": DEMO_PASSWORD}
+    )
+    assert r.status_code == 200, r.text
+    c.headers["x-csrf-token"] = c.cookies["twinpm_csrf"]
+    return c
