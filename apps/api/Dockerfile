@@ -7,13 +7,17 @@ COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev --no-install-project
 COPY . .
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev
+# Bake the embedding model into the image so the app never downloads at runtime.
+ENV HF_HOME=/app/.hf
+RUN .venv/bin/python -m twinpm.rag.embedding
 
 FROM python:3.12-slim AS runtime
 RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 10001 twinpm
 WORKDIR /app
 COPY --from=builder --chown=twinpm:twinpm /app /app
-ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1 MODELS_DIR=/app/models
+ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1 MODELS_DIR=/app/models HF_HOME=/app/.hf \
+    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 RUN mkdir -p /app/models && chown twinpm:twinpm /app/models
 USER twinpm
 EXPOSE 8000

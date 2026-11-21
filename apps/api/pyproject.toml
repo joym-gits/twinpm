@@ -38,10 +38,12 @@ dependencies = [
     "python-multipart>=0.0.34",
     "redis>=5.3.1",
     "scikit-learn>=1.9.1",
+    "sentence-transformers>=5.0",
     "shap>=0.54.1",
     "sqlalchemy[asyncio]>=2.1.9",
     "sse-starlette>=3.7.0",
     "structlog>=26.1.0",
+    "torch>=2.15.0",
     "uvicorn[standard]>=0.54.0",
     "xgboost>=3.4.1",
 ]
@@ -56,7 +58,6 @@ packages = ["twinpm"]
 [dependency-groups]
 dev = [
     "mypy>=2.4.1",
-    "pandas-stubs>=3.1.0.261029",
     "pytest>=9.2.0",
     "pytest-asyncio>=1.5.0",
     "pytest-cov>=7.1.0",
@@ -66,10 +67,14 @@ dev = [
     "types-networkx>=3.6.1.20261119",
 ]
 
-[project.optional-dependencies]
-# Local transformer embeddings (all-MiniLM-L6-v2). Without this extra, TwinPM uses a
-# deterministic hashing embedder so the demo runs fully offline. See docs/adr/0003.
-embeddings = ["sentence-transformers>=3.0"]
+[tool.uv.sources]
+# CPU-only PyTorch on Linux (containers, CI) keeps images small; macOS wheels are CPU already.
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [tool.ruff]
 line-length = 100
@@ -91,7 +96,7 @@ plugins = ["pydantic.mypy"]
 exclude = ["alembic/versions/"]
 
 [[tool.mypy.overrides]]
-module = ["shap.*", "xgboost.*", "sklearn.*", "joblib.*", "arq.*", "sentence_transformers.*", "pgvector.*", "testcontainers.*", "respx.*", "asyncpg.*"]
+module = ["pandas.*", "shap.*", "xgboost.*", "sklearn.*", "joblib.*", "arq.*", "sentence_transformers.*", "pgvector.*", "testcontainers.*", "respx.*", "asyncpg.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

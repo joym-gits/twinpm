@@ -6,7 +6,7 @@ export COREPACK_ENABLE_DOWNLOAD_PROMPT := 0
 .PHONY: install dev up down migrate seed train openapi test test-api test-web lint typecheck e2e eval demo reset
 
 install:            ## Install Python and JS dependencies
-	$(API) uv sync
+	$(API) uv sync && uv run python -m twinpm.rag.embedding
 	pnpm install
 
 dev:                ## Infra in Docker + api, worker, web locally with reload

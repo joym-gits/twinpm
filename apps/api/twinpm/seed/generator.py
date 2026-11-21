@@ -479,7 +479,7 @@ class Generator:
         if forced_reopen:
             reopens = max(reopens, 1)
         base = TYPE_BASE_DAYS[typ] * (1 + 0.55 * pts) * CALENDAR_FACTOR
-        planned = base * self.u(1.05, 1.35)
+        planned = base * self.u(1.12, 1.28)
         created = self.at(created_offset)
         started = self.at(start_offset) if start_offset is not None else None
         wid = self.uid("wi", len(self.items))
@@ -517,7 +517,7 @@ class Generator:
             "reviewed, and deployed behind a feature flag."
         )
         row["external_ref"] = {"provider": "jira", "key": row["key"]}
-        noise = float(rng.lognormal(0, 0.25))
+        noise = float(rng.lognormal(0, 0.12))
         item = _Item(
             row, epic, team, person, sprint, 0.0, review, blockers, reopens, base * noise, planned
         )
@@ -601,7 +601,7 @@ class Generator:
             members = roster.team_members(e.team)
             for n in range(e.backlog_items):
                 person = members[n % len(members)].key if n % 3 else None
-                self._finalize(self._new_item(e, e.team, person, None, None, -self.u(1, 30)), 0.8)
+                self._finalize(self._new_item(e, e.team, person, None, None, -self.u(20, 80)), 0.8)
 
     # ---------------------------------------------------------------- dependencies
     def _dependencies(self) -> None:
@@ -654,6 +654,28 @@ class Generator:
             )
             dep.blockers = max(dep.blockers, 1)
             n_edges += 1
+        # Refund status work also waits on specific Payments API endpoints.
+        refunds = [i for i in self.items if i.epic.key == "refunds" and i.row["done_at"] is None]
+        for n_ref, dep in enumerate(refunds):
+            if n_edges >= 16 or not open_api:
+                break
+            blocker_item = open_api[n_ref % len(open_api)]
+            ds.add(
+                "dependencies",
+                self.stamp(
+                    {
+                        "id": self.uid("dep-item", blocker_item.row["id"], dep.row["id"]),
+                        "from_type": "work_item",
+                        "from_id": blocker_item.row["id"],
+                        "to_type": "work_item",
+                        "to_id": dep.row["id"],
+                        "kind": "blocks",
+                        "owning_team_id": self.ids["team:payments"],
+                        "status": "open",
+                    }
+                ),
+            )
+            n_edges += 1
 
     # ---------------------------------------------------------------- events + metrics
     def _timeline(self, it: _Item) -> list[tuple[datetime, str, str | None, str | None]]:
@@ -692,7 +714,7 @@ class Generator:
             ev.append((opened, "status_change", "in_progress", "in_review"))
             ev.append((rejected, "reopened", "in_review", "in_progress"))
             ev.append((rejected, "status_change", "in_review", "in_progress"))
-        final = t(0.70)
+        final = t(0.45)  # PR opens early; review and QA run until done
         ev.append((final, "status_change", "in_progress", "in_review"))
         if has_pr:
             ev.append((final, "pr_opened", None, None))
@@ -795,7 +817,11 @@ class Generator:
         for team in roster.TEAMS:
             items = [it.row for it in self.items if it.team == team.key]
             reviews = [
-                (it.row["started_at"] + timedelta(days=it.duration * 0.7), it.review_hours)
+                (
+                    it.row["started_at"]
+                    + timedelta(days=it.duration * 0.45, hours=it.review_hours),
+                    it.review_hours,
+                )
                 for it in self.items
                 if it.team == team.key
                 and it.row["started_at"] is not None
@@ -953,11 +979,11 @@ class Generator:
         for back in range(60, 0, -1):
             day = self.anchor - timedelta(days=back)
             decline = max(0.0, (28 - back) / 28)
-            sched = 92 - 30 * decline + float(self.rng.normal(0, 1.2))
-            deps = 85 - 35 * decline + float(self.rng.normal(0, 1.5))
-            team = 80 - 18 * decline + float(self.rng.normal(0, 1.0))
+            sched = 92 - 14 * decline + float(self.rng.normal(0, 1.2))
+            deps = 85 - 10 * decline + float(self.rng.normal(0, 1.5))
+            team = 80 - 6 * decline + float(self.rng.normal(0, 1.0))
             scope = 84 + float(self.rng.normal(0, 1.0))
-            quality = 82 - 8 * decline + float(self.rng.normal(0, 1.0))
+            quality = 82 - 4 * decline + float(self.rng.normal(0, 1.0))
             subs = {
                 k: round(min(max(v, 0), 100), 1)
                 for k, v in (

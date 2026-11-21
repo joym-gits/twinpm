@@ -78,5 +78,17 @@ def get_embedder() -> Embedder:
         return HashingEmbedder()
 
 
+def download() -> None:
+    """Fetch the transformer model into the local cache (build time, not request time)."""
+    from sentence_transformers import SentenceTransformer
+
+    SentenceTransformer("all-MiniLM-L6-v2")
+
+
 def embed(texts: list[str]) -> np.ndarray:
     return get_embedder().embed(texts) if texts else np.zeros((0, EMBED_DIM), np.float32)
+
+
+if __name__ == "__main__":
+    download()
+    print(get_embedder().name)

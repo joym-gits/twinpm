@@ -34,7 +34,7 @@ def test_volumes_match_spec(ds: Dataset) -> None:
     wi = ds.tables["work_items"]
     done = sum(r["status"] == "done" for r in wi)
     assert 360 <= done <= 460
-    assert 90 <= len(wi) - done <= 150
+    assert 95 <= len(wi) - done <= 150
     assert len(ds.tables["teams"]) == 3
     assert sum(1 for p in ds.tables["people"] if p["team_id"]) == 15
     assert len(ds.tables["objectives"]) == 4

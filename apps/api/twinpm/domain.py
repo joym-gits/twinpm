@@ -9,7 +9,7 @@ SPRINT_DAYS = 14
 POINTS_PER_40H_SPRINT = 8.0
 OVERLOAD_THRESHOLD = 0.85
 # Share of each team's throughput that goes to the launch program (the rest is BAU).
-PROGRAM_ALLOCATION = 0.7
+PROGRAM_ALLOCATION = 0.53
 
 
 def capacity_points(capacity_hours_per_week: float) -> float:

@@ -27,10 +27,10 @@ Tracks Section 14 of `BUILD_SPEC.md`. A phase is checked only after its gate ran
 - [x] **Gate:** two runs produce identical hashes; storyline assertions pass
 
 ## Phase 4: ML platform
-- [ ] Features, registry, inference, SHAP
-- [ ] 7.1 delay classifier, 7.2 effort, 7.3 Monte Carlo + backtest, 7.4 anomaly, 7.5 themes, 7.6 delegation, 7.7 preference, 7.8 health
-- [ ] `make train`, `docs/ML.md`
-- [ ] **Gate:** Section 12 ML tests pass
+- [x] Features, registry, inference, SHAP
+- [x] 7.1 delay classifier, 7.2 effort, 7.3 Monte Carlo + backtest, 7.4 anomaly, 7.5 themes, 7.6 delegation, 7.7 preference, 7.8 health
+- [x] `make train`, `docs/ML.md`
+- [x] **Gate:** Section 12 ML tests pass
 
 ## Phase 5: Core APIs
 - [ ] Program/health/briefing, roadmap, scenarios, delegation, risk, dependencies, forecasts, insights
