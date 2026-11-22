@@ -35,10 +35,8 @@ jobs:
         run: uv run ruff check twinpm && uv run ruff format --check twinpm
       - name: Type-check
         run: uv run mypy twinpm
-      - name: Tests (testcontainers Postgres + Redis)
+      - name: Tests incl. agent evals in demo mode (testcontainers Postgres + Redis)
         run: uv run pytest --cov=twinpm --cov-report=term-missing:skip-covered --cov-report=xml
-      - name: Agent evals (demo model)
-        run: uv run python -m twinpm.agents.evals.run --fail-under 0.9
 
   frontend:
     runs-on: ubuntu-latest

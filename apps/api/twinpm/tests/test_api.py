@@ -231,8 +231,7 @@ async def test_planning(priya: httpx.AsyncClient) -> None:
         json={
             "epic_id": epic,
             "text": (
-                "- Score each authorisation\n- Stream fraud signals to Kafka\n"
-                "- Add a kill switch"
+                "- Score each authorisation\n- Stream fraud signals to Kafka\n- Add a kill switch"
             ),
         },
     )

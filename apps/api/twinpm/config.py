@@ -41,6 +41,10 @@ class Settings(BaseSettings):
     langsmith_tracing: bool = False
 
     rate_limit_ai_per_minute: int = 20
+    # Host headers the MCP endpoint accepts (DNS-rebinding protection).
+    mcp_allowed_hosts: list[str] = Field(
+        default_factory=lambda: ["localhost:*", "127.0.0.1:*", "api:*", "localhost", "api"]
+    )
     rate_limit_auth_per_minute: int = 10
 
     @computed_field  # type: ignore[prop-decorator]

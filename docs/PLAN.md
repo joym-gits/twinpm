@@ -38,12 +38,12 @@ Tracks Section 14 of `BUILD_SPEC.md`. A phase is checked only after its gate ran
 - [x] **Gate:** router integration tests pass; OpenAPI complete
 
 ## Phase 6: LLM, agents, RAG
-- [ ] Model factory (ChatAnthropic / DemoChatModel), tools, specialist subgraphs, supervisor + policy_gate + interrupt()
-- [ ] AsyncPostgresSaver checkpointing, background graphs, SSE mapping
-- [ ] Citation validator, guardrails, PII redaction, injection defence
-- [ ] RAG indexing + hybrid retrieval; chat SSE; comms/strategy endpoints
-- [ ] MCP server (P1) + client seam; evals; ADR 0002; `docs/AGENTS.md`
-- [ ] **Gate:** graph tests + evals pass in demo mode; interrupt survives restart
+- [x] Model factory (ChatAnthropic / DemoChatModel), tools, specialist subgraphs, supervisor + policy_gate + interrupt()
+- [x] AsyncPostgresSaver checkpointing, background graphs, SSE mapping
+- [x] Citation validator, guardrails, PII redaction, injection defence
+- [x] RAG indexing + hybrid retrieval; chat SSE; comms/strategy endpoints
+- [x] MCP server (P1) + client seam; evals; ADR 0002; `docs/AGENTS.md`
+- [x] **Gate:** graph tests + evals pass in demo mode; interrupt survives restart (Claude-key smoke test not run: no API key in this environment)
 
 ## Phase 7: Frontend screens
 - [ ] All Section 9.3 screens, live updates, command palette, Ask the Twin drawer, approvals

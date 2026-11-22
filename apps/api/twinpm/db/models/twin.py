@@ -70,7 +70,9 @@ class Suggestion(TenantMixin, Base):
     responded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     feedback_reason: Mapped[str | None] = mapped_column(Text)
     result: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)  # executor output + undo
-    thread_id: Mapped[str | None] = mapped_column(String(64))  # LangGraph thread awaiting it
+    thread_id: Mapped[str | None] = mapped_column(
+        String(100), index=True
+    )  # LangGraph thread awaiting it
     expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     undone_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 

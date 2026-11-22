@@ -24,10 +24,12 @@ log = get_logger(__name__)
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
     log.info("startup", env=settings.env, demo_mode=settings.effective_demo_mode)
+    from twinpm.agents.mcp_server import mcp
     from twinpm.agents.runtime import shutdown_agent_runtime, startup_agent_runtime
 
     await startup_agent_runtime()
-    yield
+    async with mcp.session_manager.run():
+        yield
     await shutdown_agent_runtime()
     await get_engine().dispose()
 
@@ -55,6 +57,9 @@ def create_app() -> FastAPI:
     install_error_handlers(app)
     app.include_router(health.router)
     app.include_router(api_router, prefix="/api/v1")
+    from twinpm.agents.mcp_server import mcp_asgi_app
+
+    app.mount("/mcp", mcp_asgi_app())
     configure_tracing(app, get_engine(), settings.otel_exporter_otlp_endpoint)
     return app
 
