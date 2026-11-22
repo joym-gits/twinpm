@@ -5,11 +5,13 @@ from fastapi import APIRouter
 from twinpm.api.v1 import (
     admin,
     auth,
+    catalog,
     chat,
     comms,
     delegation,
     events,
     insights,
+    integrations,
     org,
     planning,
     program,
@@ -35,5 +37,7 @@ for module in (
     strategy,
     tokens,
     admin,
+    catalog,
+    integrations,
 ):
     api_router.include_router(module.router)

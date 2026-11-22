@@ -238,6 +238,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/comms/channel-feed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Channel Feed */
+        get: operations["channel_feed_api_v1_comms_channel_feed_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/comms/extract": {
         parameters: {
             query?: never;
@@ -461,6 +478,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/entities/{entity_type}/{entity_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Entity */
+        get: operations["entity_api_v1_entities__entity_type___entity_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/epics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Epics */
+        get: operations["epics_api_v1_epics_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/events/stream": {
         parameters: {
             query?: never;
@@ -643,6 +694,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/integrations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Integrations */
+        get: operations["list_integrations_api_v1_integrations_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/integrations/{integration_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Patch
+         * @description Switch mock/live and store config. Secrets are Fernet-encrypted at rest.
+         */
+        patch: operations["patch_api_v1_integrations__integration_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/integrations/{integration_id}/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sync */
+        post: operations["sync_api_v1_integrations__integration_id__sync_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/members": {
         parameters: {
             query?: never;
@@ -676,6 +781,40 @@ export interface paths {
         head?: never;
         /** Update Member */
         patch: operations["update_member_api_v1_members__user_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/milestones": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Milestones */
+        get: operations["milestones_api_v1_milestones_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ml/models": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Model Cards */
+        get: operations["model_cards_api_v1_ml_models_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/notifications": {
@@ -744,6 +883,23 @@ export interface paths {
         head?: never;
         /** Update Org Settings */
         patch: operations["update_org_settings_api_v1_org_settings_patch"];
+        trace?: never;
+    };
+    "/api/v1/people": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** People */
+        get: operations["people_api_v1_people_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/persona": {
@@ -1167,6 +1323,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/teams": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teams */
+        get: operations["teams_api_v1_teams_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/twin/learning": {
         parameters: {
             query?: never;
@@ -1176,6 +1349,23 @@ export interface paths {
         };
         /** Learning */
         get: operations["learning_api_v1_twin_learning_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/work-items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Work Items */
+        get: operations["work_items_api_v1_work_items_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1672,6 +1862,42 @@ export interface components {
             /** Value */
             value?: number | string | null;
         };
+        /** EntityOut */
+        EntityOut: {
+            /** Fields */
+            fields: {
+                [key: string]: unknown;
+            };
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Link */
+            link: string | null;
+            /** Title */
+            title: string;
+            /** Type */
+            type: string;
+        };
+        /** EpicOut */
+        EpicOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Initiative Id */
+            initiative_id: string | null;
+            /** Key */
+            key: string;
+            /** Status */
+            status: string;
+            /** Team Id */
+            team_id: string | null;
+            /** Title */
+            title: string;
+        };
         /** ExtractOut */
         ExtractOut: {
             /** Action Items */
@@ -2031,6 +2257,39 @@ export interface components {
                 [key: string]: number;
             } | null;
         };
+        /** IntegrationOut */
+        IntegrationOut: {
+            /**
+             * Configured
+             * @default false
+             */
+            configured: boolean;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Last Sync At */
+            last_sync_at: string | null;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "mock" | "live";
+            /** Provider */
+            provider: string;
+            /** Status */
+            status: string;
+        };
+        /** IntegrationPatch */
+        IntegrationPatch: {
+            /** Config */
+            config?: {
+                [key: string]: unknown;
+            } | null;
+            /** Mode */
+            mode?: ("mock" | "live") | null;
+        };
         /** LearningStats */
         LearningStats: {
             /** Acceptance Rate */
@@ -2193,6 +2452,25 @@ export interface components {
              */
             team_id: string;
         };
+        /** MilestoneOut */
+        MilestoneOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Program Id
+             * Format: uuid
+             */
+            program_id: string;
+            /** Scope */
+            scope: string[];
+            /** Target Date */
+            target_date: string;
+        };
         /** NotificationOut */
         NotificationOut: {
             /** Body */
@@ -2291,6 +2569,20 @@ export interface components {
             weeks: {
                 [key: string]: unknown;
             }[];
+        };
+        /** PersonOut */
+        PersonOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Team Id */
+            team_id: string | null;
+            /** Title */
+            title: string;
         };
         /** PersonaOut */
         PersonaOut: {
@@ -2890,6 +3182,19 @@ export interface components {
             /** Undone At */
             undone_at: string | null;
         };
+        /** SyncOut */
+        SyncOut: {
+            /** Created */
+            created: number;
+            /** Details */
+            details: string[];
+            /** Events */
+            events: number;
+            /** Provider */
+            provider: string;
+            /** Updated */
+            updated: number;
+        };
         /** TeamHealthOut */
         TeamHealthOut: {
             /** After Hours Ratio */
@@ -2917,6 +3222,18 @@ export interface components {
             team_id: string;
             /** Utilisation Mean */
             utilisation_mean: number | null;
+        };
+        /** TeamOut */
+        TeamOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Size */
+            size: number;
         };
         /** ThemeOut */
         ThemeOut: {
@@ -3033,6 +3350,32 @@ export interface components {
             /** Message */
             msg: string;
             /** Error Type */
+            type: string;
+        };
+        /** WorkItemOut */
+        WorkItemOut: {
+            /** Assignee Person Id */
+            assignee_person_id: string | null;
+            /** Due Date */
+            due_date: string | null;
+            /** Epic Id */
+            epic_id: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Key */
+            key: string;
+            /** Status */
+            status: string;
+            /** Story Points */
+            story_points: number;
+            /** Team Id */
+            team_id: string | null;
+            /** Title */
+            title: string;
+            /** Type */
             type: string;
         };
         /** WorkloadOut */
@@ -3502,6 +3845,39 @@ export interface operations {
             };
         };
     };
+    channel_feed_api_v1_comms_channel_feed_get: {
+        parameters: {
+            query?: {
+                channel?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    }[];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     extract_api_v1_comms_extract_post: {
         parameters: {
             query?: never;
@@ -3919,6 +4295,58 @@ export interface operations {
             };
         };
     };
+    entity_api_v1_entities__entity_type___entity_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                entity_type: string;
+                entity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntityOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    epics_api_v1_epics_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EpicOut"][];
+                };
+            };
+        };
+    };
     stream_api_v1_events_stream_get: {
         parameters: {
             query?: never;
@@ -4234,6 +4662,92 @@ export interface operations {
             };
         };
     };
+    list_integrations_api_v1_integrations_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntegrationOut"][];
+                };
+            };
+        };
+    };
+    patch_api_v1_integrations__integration_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                integration_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IntegrationPatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IntegrationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sync_api_v1_integrations__integration_id__sync_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                integration_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SyncOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_members_api_v1_members_get: {
         parameters: {
             query?: never;
@@ -4318,6 +4832,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    milestones_api_v1_milestones_get: {
+        parameters: {
+            query?: {
+                program_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MilestoneOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    model_cards_api_v1_ml_models_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    }[];
                 };
             };
         };
@@ -4434,6 +5001,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    people_api_v1_people_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PersonOut"][];
                 };
             };
         };
@@ -5241,6 +5828,26 @@ export interface operations {
             };
         };
     };
+    teams_api_v1_teams_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamOut"][];
+                };
+            };
+        };
+    };
     learning_api_v1_twin_learning_get: {
         parameters: {
             query?: never;
@@ -5257,6 +5864,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LearningStats"];
+                };
+            };
+        };
+    };
+    work_items_api_v1_work_items_get: {
+        parameters: {
+            query?: {
+                epic_id?: string | null;
+                open_only?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkItemOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

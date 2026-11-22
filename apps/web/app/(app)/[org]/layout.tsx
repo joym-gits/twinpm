@@ -1,5 +1,5 @@
+import { AppChrome } from "@/components/layout/app-chrome";
 import { Sidebar } from "@/components/layout/sidebar";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 export default async function AppLayout({
   children,
@@ -11,12 +11,12 @@ export default async function AppLayout({
   const { org } = await params;
   return (
     <div className="flex min-h-screen">
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-surface focus:p-2">
+        Skip to content
+      </a>
       <Sidebar org={org} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center justify-end gap-2 border-b border-border bg-surface px-6">
-          <ThemeToggle />
-        </header>
-        <main className="flex-1 p-6">{children}</main>
+        <AppChrome org={org}>{children}</AppChrome>
       </div>
     </div>
   );
