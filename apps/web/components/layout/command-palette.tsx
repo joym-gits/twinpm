@@ -1,12 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Command } from "cmdk";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { NAV_ITEMS } from "@/components/layout/nav";
 import { api, unwrap } from "@/lib/api/client";
+import { useMe } from "@/lib/auth/use-me";
 import { useUi } from "@/lib/store";
 
 export function CommandPalette({ org, open, setOpen }: { org: string; open: boolean; setOpen: (o: boolean) => void }) {
@@ -14,6 +15,17 @@ export function CommandPalette({ org, open, setOpen }: { org: string; open: bool
   const openTwin = useUi((s) => s.openTwin);
   const openEntity = useUi((s) => s.openEntity);
   const [search, setSearch] = useState("");
+  const me = useMe();
+  const qc = useQueryClient();
+  const canReset =
+    !!me.data &&
+    me.data.org.slug === "novapay" &&
+    (me.data.permissions.includes("admin") || (me.data.demo_mode && me.data.user.role === "tpm"));
+  async function resetDemo() {
+    await api.POST("/api/v1/admin/reset-demo");
+    await qc.invalidateQueries();
+    router.push(`/${org}/command-center`);
+  }
   const items = useQuery({
     queryKey: ["palette-items"],
     enabled: open,
@@ -55,6 +67,11 @@ export function CommandPalette({ org, open, setOpen }: { org: string; open: bool
               <Command.Item className={item} onSelect={() => go(() => router.push(`/${org}/risk`))}>
                 Simulate a slip
               </Command.Item>
+              {canReset && search.toLowerCase().includes("reset") && (
+                <Command.Item className={item} onSelect={() => go(() => void resetDemo())}>
+                  Reset demo data (re-seed NovaPay)
+                </Command.Item>
+              )}
             </Command.Group>
             <Command.Group heading="Pages" className="text-xs text-muted">
               {NAV_ITEMS.map((n) => (

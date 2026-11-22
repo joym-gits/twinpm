@@ -233,9 +233,7 @@ async def build_briefing(
         epic_id = max(crit, key=lambda n: graph.graph.nodes[n]["risk"])
         epic = epics.loc[epic_id]
         dependents = [
-            d
-            for d in graph.graph.successors(epic_id)
-            if graph.graph.nodes[d]["kind"] == "epic"
+            d for d in graph.graph.successors(epic_id) if graph.graph.nodes[d]["kind"] == "epic"
         ]
         epic_p80 = date.fromisoformat(
             latest.distribution["epic_p80"].get(str(epic_id), latest.p80_date.isoformat())

@@ -5293,6 +5293,30 @@
         ]
       }
     },
+    "/api/v1/admin/reset-demo": {
+      "post": {
+        "description": "Re-seed the NovaPay demo org (deterministic). Org admins always; TPMs in demo mode.\n\nThe seed runs inline (a few seconds); ML outputs refresh right after in the background.",
+        "operationId": "reset_demo_api_v1_admin_reset_demo_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Reset Demo Api V1 Admin Reset Demo Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Reset Demo",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/api/v1/api-tokens": {
       "get": {
         "operationId": "list_tokens_api_v1_api_tokens_get",

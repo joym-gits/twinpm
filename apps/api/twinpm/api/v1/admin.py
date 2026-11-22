@@ -9,7 +9,7 @@ from fastapi import APIRouter
 from sqlalchemy import func, select
 
 from twinpm.db.models import LlmCall
-from twinpm.deps import DB, AdminCtx
+from twinpm.deps import DB, AdminCtx, Ctx
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -52,3 +52,37 @@ async def ai_usage(ctx: AdminCtx, session: DB, days: int = 30) -> dict[str, Any]
         "cost_usd": round(sum(x["cost_usd"] for x in by), 4),
         "by_purpose": by,
     }
+
+
+@router.post("/reset-demo", response_model=dict[str, Any])
+async def reset_demo(ctx: Ctx, session: DB) -> dict[str, Any]:
+    """Re-seed the NovaPay demo org (deterministic). Org admins always; TPMs in demo mode.
+
+    Seeds, then refreshes predictions, forecasts, anomalies, health and themes before returning,
+    so no screen sees a half-reset org.
+    """
+    import time
+
+    from twinpm.config import get_settings
+    from twinpm.core.errors import ForbiddenError
+    from twinpm.core.rbac import Perm, has_perm
+    from twinpm.db.models import Organization
+    from twinpm.seed.generator import generate
+    from twinpm.seed.loader import load
+    from twinpm.services.ml_jobs import refresh_org, refresh_themes
+
+    s = get_settings()
+    org = await session.get(Organization, ctx.org_id)
+    if org is None or org.slug != "novapay":
+        raise ForbiddenError("Reset is only available for the NovaPay demo org")
+    if not (has_perm(ctx.role, Perm.ADMIN) or (s.effective_demo_mode and ctx.role == "tpm")):
+        raise ForbiddenError("Only org admins can reset the demo")
+    t0 = time.perf_counter()
+    await session.rollback()
+    await load(session, generate(42), s.seed_demo_password.get_secret_value())
+    seeded = round(time.perf_counter() - t0, 2)
+
+    await refresh_org(session, ctx.org_id)
+    await refresh_themes(session, ctx.org_id)
+    total = round(time.perf_counter() - t0, 2)
+    return {"status": "reset", "seed_seconds": seeded, "total_seconds": total}

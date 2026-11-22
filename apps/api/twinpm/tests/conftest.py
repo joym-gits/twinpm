@@ -45,6 +45,7 @@ def _boot_services() -> None:
         MODELS_DIR=os.environ.get("TEST_MODELS_DIR", str(Path(__file__).parent / ".models")),
         FERNET_KEY="8Tb2t8Qd5Q3Hb3n5mTqg9Zg6n8wW1v1J2XoUeYvVZ0s=",
         RATE_LIMIT_AUTH_PER_MINUTE="1000",
+        SEED_DEMO_PASSWORD="Demo-password-for-tests-1",
         MCP_ALLOWED_HOSTS='["test", "localhost:*"]',
         RATE_LIMIT_AI_PER_MINUTE="1000",
     )

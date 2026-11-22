@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from twinpm.domain import capacity_points
 from twinpm.seed.generator import Dataset, generate
+from twinpm.tests.conftest import DEMO_PASSWORD
 
 ANCHOR = date(2026, 11, 21)
 
@@ -152,17 +153,22 @@ async def test_load_is_idempotent(db: AsyncSession) -> None:
     from twinpm.services import audit
 
     data = generate(42, ANCHOR)
-    await load(db, data, "pw-for-tests-123")
+    await load(db, data, DEMO_PASSWORD)
     org_id = await db.scalar(select(Organization.id).where(Organization.slug == "novapay"))
     assert org_id is not None
     await audit.record(
         db, TenantContext.system(org_id), action="x", entity_type="program", entity_id=None
     )
     await db.commit()
-    timing = await load(db, generate(42, ANCHOR), "pw-for-tests-123")
+    timing = await load(db, generate(42, ANCHOR), DEMO_PASSWORD)
     assert timing["seconds"] < 10
     n = await db.scalar(select(func.count()).select_from(WorkItem))
     assert n == len(data.tables["work_items"])
     chunks = await db.scalar(select(func.count()).select_from(DocumentChunk))
     assert chunks is not None
     assert chunks > 20
+    # Restore ML outputs so later tests see a fully refreshed demo org.
+    from twinpm.services.ml_jobs import refresh_org, refresh_themes
+
+    await refresh_org(db, org_id)
+    await refresh_themes(db, org_id)

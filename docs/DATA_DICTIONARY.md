@@ -609,7 +609,7 @@ Twin-proposed actions awaiting or past a decision; the Action Executor runs them
 | `responded_at` | DATETIME | yes |  |
 | `feedback_reason` | TEXT | yes |  |
 | `result` | JSONB | no | Executor output, including what is needed to undo. |
-| `thread_id` | VARCHAR(64) | yes | LangGraph thread awaiting this approval, if any. |
+| `thread_id` | VARCHAR(100) | yes | LangGraph thread awaiting this approval, if any. |
 | `expires_at` | DATETIME | yes |  |
 | `undone_at` | DATETIME | yes |  |
 | `org_id` | UUID | no | FK -> `organizations`; Tenant. Indexed; enforced by the repository layer. |

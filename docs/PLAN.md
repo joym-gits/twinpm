@@ -54,9 +54,24 @@ Tracks Section 14 of `BUILD_SPEC.md`. A phase is checked only after its gate ran
 - [x] **Gate:** worker runs jobs; dashboard updates on ticks
 
 ## Phase 9: Hardening
-- [ ] Security headers, rate limits, perf checks, Helm chart, SECURITY.md, ARCHITECTURE.md, ADRs
-- [ ] **Gate:** all tests pass; `docker compose up` from clean clone works
+- [x] Security headers, rate limits, perf checks, Helm chart, SECURITY.md, ARCHITECTURE.md, ADRs
+- [x] **Gate:** all tests pass; `docker compose up` from clean clone works
 
 ## Phase 10: Demo polish
-- [ ] Playwright demo E2E, DEMO_SCRIPT.md, Reset Demo, README
-- [ ] **Gate:** E2E passes; fresh clone + `make demo` to login < 5 min
+- [x] Playwright demo E2E, DEMO_SCRIPT.md, Reset Demo, README
+- [x] **Gate:** E2E passes; fresh clone + `make demo` to login < 5 min
+
+## Gate evidence (2026-11-22)
+- Backend: 85 pytest tests pass (testcontainers Postgres + Redis); ruff and mypy --strict clean.
+  Coverage: services 87%, ml 93%, services/policy 98%, total 88%.
+- Agent evals (demo model): 26/26, tool-selection accuracy 1.0, citation validity 1.0,
+  0 policy violations. Interrupt survives a checkpointer restart (test).
+- ML: delay ROC-AUC 0.83 (seed 42), storyline items > 0.65, launch P80 moves >= 7 days with the
+  Payments slip, rebalance recovers ~73% of it.
+- Frontend: ESLint + tsc clean; Vitest 11/11; Lighthouse accessibility 100 on Command Center;
+  no console errors on any screen (checked in Chrome).
+- Playwright demo E2E passes against `make dev` and against the Docker Compose stack.
+- Fresh `git clone` + `make demo` reached a working login in 105 s (warm Docker layer cache).
+- Dashboard API p95 <= 77 ms on seed data; Monte Carlo 10k runs ~0.25 s; demo reset 3.4 s.
+- Not verified: GitHub Actions run (no remote configured); chat/status report with a real
+  Anthropic key (none in this environment).

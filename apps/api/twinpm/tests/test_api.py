@@ -296,3 +296,15 @@ async def test_executive_is_read_only(client: httpx.AsyncClient, seeded: dict[st
     assert r.status_code == 403
     r = await client.get(f"/api/v1/programs/{prog['id']}/health")
     assert r.status_code == 200
+
+
+async def test_zz_reset_demo_is_fast_and_rbac_checked(
+    client: httpx.AsyncClient, priya: httpx.AsyncClient
+) -> None:
+    """Runs last in this module: it re-seeds the shared demo org."""
+    r = await priya.post("/api/v1/admin/reset-demo")
+    assert r.status_code == 200, r.text
+    assert r.json()["seed_seconds"] < 10
+    print("reset timings", r.json())
+    me = await priya.get("/api/v1/auth/me")  # deterministic IDs: the session survives
+    assert me.status_code == 200
