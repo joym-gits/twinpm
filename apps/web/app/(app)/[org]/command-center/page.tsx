@@ -119,6 +119,8 @@ function OptionsDialog({ suggestionId, open, setOpen }: { suggestionId: string; 
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent title="Options" description={`Simulated 10,000 times each. Baseline P80 ${shortDate(payload.result?.baseline_p80)}.`} className="w-[min(760px,94vw)]">
         {q.isLoading && <SkeletonLoader rows={5} />}
+        {q.isError && <ErrorState error={q.error} onRetry={() => void q.refetch()} />}
+        {q.data && !payload.options?.length && <EmptyState title="No options available" description="Refresh the briefing to re-simulate." />}
         <div className="grid gap-3 md:grid-cols-3" data-testid="options">
           {payload.options?.map((o) => (
             <Card key={o.name} className={`p-4 ${o === best ? "ring-2 ring-accent" : ""}`}>

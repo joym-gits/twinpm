@@ -50,7 +50,11 @@ export async function authFetch(input: Request): Promise<Response> {
   return fetch(withCsrf(retry));
 }
 
-export const api = createClient<paths>({ baseUrl: "", credentials: "include", fetch: authFetch });
+export const api = createClient<paths>({
+  baseUrl: typeof window !== "undefined" ? window.location.origin : "",
+  credentials: "include",
+  fetch: authFetch,
+});
 
 export class ApiError extends Error {
   constructor(

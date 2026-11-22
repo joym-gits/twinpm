@@ -142,7 +142,8 @@ def compute(
         words = kw.get(c, [])
         label = " / ".join(w.replace("-", " ").title() for w in words[:2]) or f"Theme {c + 1}"
         dist = vecs[mask] @ centroid
-        quotes = g.iloc[np.argsort(-dist)[:3]]["text"].tolist()
+        ranked = g.iloc[np.argsort(-dist)]["text"].tolist()
+        quotes = list(dict.fromkeys(ranked))[:3]  # feedback repeats; quote each text once
         results.append(
             ThemeResult(
                 label,

@@ -63,6 +63,21 @@ async def purge_org(session: AsyncSession, slug: str) -> None:
     )
     await session.execute(delete(m.Organization).where(m.Organization.id == org_id))
     await session.execute(text("SET LOCAL twinpm.audit_purge = 'off'"))
+    await _clear_cached_state(org_id)
+
+
+async def _clear_cached_state(org_id: object) -> None:
+    """Drop Redis caches derived from the old org (briefings, slack feed)."""
+    from twinpm.core.redis import get_redis
+
+    try:
+        r = get_redis()
+        for pattern in (f"twinpm:briefing:{org_id}:*", f"twinpm:slack:{org_id}:*"):
+            keys = [k async for k in r.scan_iter(match=pattern)]
+            if keys:
+                await r.delete(*keys)
+    except Exception:  # noqa: S110 - Redis may be down during an offline reseed
+        pass
 
 
 async def _has_checkpoints(session: AsyncSession) -> bool:

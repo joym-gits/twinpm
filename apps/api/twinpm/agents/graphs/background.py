@@ -94,6 +94,9 @@ async def owner_state(org_id: uuid.UUID) -> BgState | None:
                 .limit(1)
             )
         ).scalar_one_or_none()
-    if prog is None or prog.owner_user_id is None:
+        has_milestone = prog is not None and await s.scalar(
+            select(m.Milestone.id).where(m.Milestone.program_id == prog.id).limit(1)
+        )
+    if prog is None or prog.owner_user_id is None or not has_milestone:
         return None
     return {"org_id": str(org_id), "user_id": str(prog.owner_user_id), "program_id": str(prog.id)}

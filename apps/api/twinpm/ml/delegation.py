@@ -170,8 +170,8 @@ class Ranker:
         ]
         context = float((recent["epic_id"] == item["epic_id"]).any())
         cap = capacity_points(float(self.people.at[pid, "capacity_hours_per_week"]))
-        # Unstarted work can be scheduled over the next two sprints.
-        horizon = 1.0 if pd.notna(item.get("started_at")) else 2.0
+        # In-flight work is about half done; unstarted work spreads over the sprints ahead.
+        horizon = 2.0 if pd.notna(item.get("started_at")) else SPREAD_SPRINTS
         over = max(0.0, util + float(item["story_points"]) / (cap * horizon) - 1.0)
         return {
             "skill_match": round(skill, 3),
