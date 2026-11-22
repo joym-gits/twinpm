@@ -1,0 +1,107 @@
+[
+ {
+  "id": "s00_intro",
+  "title": "TwinPM",
+  "text": "Meet Twin PM. An AI digital twin for technical program managers and technical product managers.\nIt keeps two living models. One of your program: the people, their skills, the work, the dependencies, the risks and the decisions. And one of you: your priorities, how you write, how much risk you'll tolerate, and when you escalate.\nOn top of those, it watches delivery signals, predicts problems with machine learning, simulates your options, delegates work, drafts your communications, and acts, but only as far as you allow. And every single thing it does comes with its reasoning attached.\nLet's walk through the whole product, end to end."
+ },
+ {
+  "id": "s01_login",
+  "title": "Sign in",
+  "text": "We'll sign in as Priya Sharma, the T P M who owns the Checkout two point oh program at a fintech called NovaPay.\nThis whole demo is running in demo mode. There's no A P I key configured, so a deterministic stand-in model drives the exact same agents, tools and policies that Claude would. Every number you're about to see is computed live from the program's data, not scripted."
+ },
+ {
+  "id": "s02_health",
+  "title": "Command Center: program health",
+  "text": "This is the Command Center, Priya's home screen.\nOn the left is the program health score, out of a hundred. It's a weighted blend of five sub-scores: schedule, scope, quality, dependencies, and team. Schedule compares the forecast launch date against the target. Quality looks at bug inflow and reopened work. Dependencies counts open blockers on the critical path and how risky they are. Team looks at how evenly load is spread, and at team-level sentiment.\nHover any chip and you get the driver behind it. The sparkline shows the last thirty days, and you can see health dropping this week. Across the top, an anomaly strip flags metrics that broke from their normal pattern."
+ },
+ {
+  "id": "s03_briefing",
+  "title": "Morning briefing",
+  "text": "Every morning the twin writes a briefing: the three things that most need Priya's attention, ranked by severity and by what she tends to act on.\nNumber one: the Payments A P I is likely to slip, three launch epics depend on it, and the launch forecast has moved by about two weeks.\nLet's open Why. These drivers come from a delay-risk model, an X G Boost classifier trained on six months of history, with its probabilities calibrated, and explained with SHAP values. So instead of a black box, you see exactly what pushes the risk up: work sent back after review, far more time used than planned, slow code reviews, and an owner who's over capacity. And every claim links to its evidence. Click a source chip and the underlying record opens right here."
+ },
+ {
+  "id": "s04_forecast",
+  "title": "Monte Carlo forecast",
+  "text": "Below health is the launch forecast. Twin PM doesn't give you one date, because one date is always wrong. It runs ten thousand Monte Carlo simulations of the remaining work, in about a quarter of a second.\nEach simulation samples each team's real throughput from recent sprints, adds overruns based on every item's delay risk, and respects dependencies, so work that's blocked can't start until its blocker is done.\nThe result is a band: P fifty, P eighty and P ninety five, against the target date. Here, P eighty is a little more than a week late, and two weeks ago it was on time. Expand it, and you see the whole distribution."
+ },
+ {
+  "id": "s05_options",
+  "title": "Options, simulated",
+  "text": "Back on the briefing, See options shows the three standard responses, each one simulated with the same engine.\nRebalance moves critical-path work to people with spare capacity. Descope defers the lowest-risk items. Move the date simply shifts the target.\nRebalancing pulls the forecast in by about three weeks, without cutting scope or moving the date, so the twin recommends it. We'll come back to that choice in a moment. First, let's look at where the risk actually lives."
+ },
+ {
+  "id": "s06_radar",
+  "title": "Risk Radar: dependency graph",
+  "text": "This is the Risk Radar. The dependency graph shows every launch epic, and the work items that link them across teams. Colour is the team, size is the remaining scope, and the border is the delay risk.\nThe red, animated path is the critical path, computed with a classic forward and backward pass over the graph. Idempotency keys, then the Payments A P I, then the mobile checkout.\nNow, what if the Payments A P I slips nine days? Simulate the slip, and the twin traces the cascade: every downstream epic lights up, and it re-runs the forecast to show how far the launch moves."
+ },
+ {
+  "id": "s07_risktables",
+  "title": "At-risk items and the risk register",
+  "text": "Further down are the at-risk work items, sorted by probability, each with its top drivers, owner, and due date. You can filter by epic, team, or threshold.\nThen there's the risk register. Some risks were added by people. Others, marked Model, were raised by the twin itself when the delay model found trouble on the critical path, and it keeps their probability up to date every hour.\nThe model card shows exactly how the classifier was trained: the time-based split, the features, and its metrics, including an R O C A U C of about zero point eight three, plus its known limitations."
+ },
+ {
+  "id": "s08_ask",
+  "title": "Ask the Twin",
+  "text": "Now let's ask the twin directly. Command J opens Ask the Twin from anywhere, and it knows which page you're on.\nWe'll ask the most honest question a T P M has: What should I do?\nUnder the hood, this is a Lang Graph supervisor. It plans which specialist agents to consult, and in what order. There are six: strategy, planner, delegation, risk, communications, and insights. Each specialist is its own small agent with its own tools and prompt, and you can watch the trace stream in. Risk pulls the at-risk items, the forecast, and the critical path. Planner simulates the options. Delegation checks everyone's workload and drafts a rebalance.\nThen the answer streams back, grounded in the tool results, with every source cited. And before it's shown, a validator checks that each cited I D really exists in this workspace, and strips anything it can't verify."
+ },
+ {
+  "id": "s09_policy",
+  "title": "Autonomy and approvals",
+  "text": "Notice the last part: six actions are waiting for approval. Nothing has changed yet.\nThat's the autonomy policy at work. Each kind of action sits at a level. Level one, observe: just tell me. Level two, suggest. Level three, act with approval: one click from Priya executes it. Level four, autonomous: do it, log it, tell me, and let me undo it.\nThe policy engine is plain, deterministic code, deliberately outside the language model. The model can propose, but it can never raise its own permissions. When an action needs approval, the agent run pauses mid-flight, and that pause is saved in the database. It can wait hours, survive a server restart, and pick up exactly where it left off once Priya decides."
+ },
+ {
+  "id": "s10_delegation",
+  "title": "Delegation: the rebalance",
+  "text": "Choosing Rebalance brings us to the Delegation board.\nHere's the plan: from Vikram, the overloaded Payments lead, to Karan and Li Wei on the Platform team. Each candidate is scored on skill match, availability, throughput on similar work, growth goals, and whether they already know this part of the code. Karan is strong in Go and A P I design, has forty percent headroom, and wants to grow into payments. So the twin explains its choice in one plain sentence.\nIt never uses personal attributes like age, gender, or nationality, and a test guarantees that.\nThe forecast impact sits right on top: about three weeks earlier. Let's approve all six."
+ },
+ {
+  "id": "s11_workload",
+  "title": "Workload, fairness and nudges",
+  "text": "The approvals go through one action executor. It checks permissions and policy, applies each change in a transaction, writes the audit log, notifies the new owners, and pushes a live update to every open screen.\nBelow is the workload heatmap: people across weeks, with overload outlined and the percentage printed in every cell, so colour is never the only signal. There's a distribution monitor, too, so you can see that work isn't always landing on the same people.\nAnd the twin watches for stalled work: items stuck in a status, or pull requests waiting on review. It drafts a friendly nudge for each one, which you can edit before sending."
+ },
+ {
+  "id": "s12_audit",
+  "title": "The audit trail",
+  "text": "Back on the Command Center, the activity feed now shows what just happened, and who did it: Priya, or Priya's twin, marked with its own icon.\nOpen any entry and you get the full audit record: the action, the actor, the before and after values, the reason, and the request that caused it. The audit log is append-only. That isn't just a promise in the code. A database trigger rejects any attempt to edit or delete it."
+ },
+ {
+  "id": "s13_roadmap",
+  "title": "Roadmap and what-if simulator",
+  "text": "On to the Roadmap. Initiatives sit in now, next, and later, each with its RICE and W S J F scores, its dependency count, and its risk. You can drag cards between columns, or use the keyboard menu, and every move is audited.\nThe what-if simulator lets Priya build her own scenarios: add or remove scope, change a team's capacity, reassign work, or shift the date. Here, let's give the Payments team thirty percent more capacity, and run it. You get the baseline and the scenario side by side, the change in days, the change in risk, and which epics are affected.\nScenarios can be saved and compared, up to three at a time. And the epic breakdown splits an epic into stories with acceptance criteria and machine-learning effort estimates, each with an eighty percent range and similar past items to compare against."
+ },
+ {
+  "id": "s14_strategy",
+  "title": "Strategy: customer themes",
+  "text": "Strategy is where the product side lives. A hundred and fifty pieces of customer feedback are embedded with a sentence-transformer model running locally, and clustered into themes.\nEach theme gets an opportunity score with a fully transparent breakdown: volume, recent growth, how negative the sentiment is, the value of the customer segments, and how well it fits the program's objectives. Exporting data in bulk is clearly the top opportunity: the most requests, and strongly negative sentiment.\nSelect a theme to see representative quotes, the trend over time, and the objectives it connects to."
+ },
+ {
+  "id": "s15_prd",
+  "title": "PRD drafting and devil's advocate",
+  "text": "From a theme, the twin can draft a product requirements document. It streams in live, grounded in the customer quotes and in related design documents it retrieves with hybrid search: vector similarity, full-text search, and links between entities, blended together.\nThe draft is saved, it's editable, and it's clearly labelled as drafted by Priya's twin.\nThen there's the devil's advocate. It reads the draft and pushes back: the assumptions it's making, the counter-arguments, and cheap experiments to test them before anyone writes a line of code."
+ },
+ {
+  "id": "s16_comms",
+  "title": "Comms Studio: status report",
+  "text": "Comms Studio. Let's generate this week's executive update.\nThe twin pulls a live snapshot of health, the forecast, recent wins, and the top risks, and writes it in Priya's voice. Her persona says concise, bottom line first, so it opens with a red, amber, or green status and the bottom line. Every number traces back to a source.\nPriya edits one line and approves it. It posts to the team channel, and her edit is saved as a new style example, so next week's draft sounds even more like her. Status reports are capped at approval. The twin can never send one on its own."
+ },
+ {
+  "id": "s17_extract",
+  "title": "Transcripts and the decision log",
+  "text": "The transcript extractor turns a meeting into actions. Pick the latest architecture sync, and the twin finds three decisions, like sticking with Kafka for payment events, and six action items, each with an owner and a due date. The action items become task suggestions, ready to approve.\nThe decision log is searchable. Search for Kafka and you find why the team chose Kafka over S Q S: the options, the rationale, who was there, and the source document."
+ },
+ {
+  "id": "s18_insights",
+  "title": "Insights",
+  "text": "Insights is the metrics view. Pick a team and a metric, like Payments review latency, and the chart marks anomalies. Those come from two detectors working together: a rolling z-score against a lagged baseline, and an isolation forest across all of a team's metrics at once.\nTeam health shows sentiment and after-hours activity, but only at team level, and teams under five people are hidden. Twin PM never scores individuals.\nAnd you can just ask a question in plain English. The answer comes from a parameterised metric tool, so the model never writes database queries itself."
+ },
+ {
+  "id": "s19_settings",
+  "title": "Settings: persona, autonomy, learning",
+  "text": "Finally, Settings, where Priya shapes her twin.\nPersona holds her priorities, tone, risk tolerance, escalation rules, and style examples. Autonomy is the dial for every kind of action, from level one to level four, with hard caps on the sensitive ones.\nTwin learning shows the feedback loop. Every accept, edit, and reject is logged with its context. A small preference model learns what Priya tends to approve, re-ranks her briefing, and nudges the delegation weights, but never by more than thirty percent from the defaults.\nIntegrations connect Jira, GitHub, and Slack, mock or live, with secrets encrypted at rest. And A P I tokens let tools like Claude query the twin through an M C P server, with the same permissions and the same policy gate."
+ },
+ {
+  "id": "s20_outro",
+  "title": "Built for the enterprise",
+  "text": "Under the hood, Twin PM is built like an enterprise product. Every tenant's data is isolated, and that's tested. Permissions are checked on every request. Emails and phone numbers are redacted before anything reaches a language model, and document text is treated as untrusted, so instructions hidden inside it can't take over.\nIt's observable, tested, containerised, and ready for Kubernetes. Swap in a Claude A P I key, and the same agents run on Claude.\nTwin PM doesn't just answer questions about your program. It runs it the way you would, and shows its reasoning every time."
+ }
+]
