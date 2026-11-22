@@ -1,0 +1,46 @@
+# Default (dev) values. Production overrides live in values-prod.yaml.
+image:
+  api: ghcr.io/novapay/twinpm-api:0.1.0
+  # Build the web image with --build-arg API_INTERNAL_URL=http://twinpm-api:8000
+  web: ghcr.io/novapay/twinpm-web:0.1.0
+  pullPolicy: IfNotPresent
+
+# Existing Secret with DATABASE_URL, REDIS_URL, JWT_SECRET, FERNET_KEY, ANTHROPIC_API_KEY,
+# SEED_DEMO_PASSWORD. Never put secrets in values files.
+secretName: twinpm-secrets
+
+env:
+  ENV: dev
+  LOG_JSON: "true"
+  DEMO_MODE: "false"
+  DEMO_LIVE_TICKS: "true"
+  COOKIE_SECURE: "false"
+  CORS_ORIGINS: '["http://twinpm.local"]'
+  MCP_ALLOWED_HOSTS: '["twinpm.local", "twinpm.local:*"]'
+  OTEL_EXPORTER_OTLP_ENDPOINT: ""
+
+api:
+  replicas: 1
+  resources:
+    requests: { cpu: 250m, memory: 1Gi }
+    limits: { cpu: "1", memory: 2Gi }
+worker:
+  replicas: 1
+  resources:
+    requests: { cpu: 250m, memory: 1Gi }
+    limits: { cpu: "2", memory: 3Gi }
+web:
+  replicas: 1
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+
+modelsVolume:
+  size: 2Gi
+  storageClass: ""
+
+ingress:
+  enabled: true
+  className: nginx
+  host: twinpm.local
+  tls: false

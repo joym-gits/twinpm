@@ -1,0 +1,22 @@
+env:
+  ENV: prod
+  DEMO_LIVE_TICKS: "false"
+  COOKIE_SECURE: "true"
+  CORS_ORIGINS: '["https://twinpm.example.com"]'
+  MCP_ALLOWED_HOSTS: '["twinpm.example.com"]'
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector.observability:4318
+api:
+  replicas: 3
+  resources:
+    requests: { cpu: 500m, memory: 1500Mi }
+    limits: { cpu: "2", memory: 3Gi }
+worker:
+  replicas: 2
+web:
+  replicas: 2
+modelsVolume:
+  size: 10Gi
+  storageClass: efs-sc   # ReadWriteMany: API and worker share the model registry
+ingress:
+  host: twinpm.example.com
+  tls: true

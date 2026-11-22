@@ -46,12 +46,12 @@ Tracks Section 14 of `BUILD_SPEC.md`. A phase is checked only after its gate ran
 - [x] **Gate:** graph tests + evals pass in demo mode; interrupt survives restart (Claude-key smoke test not run: no API key in this environment)
 
 ## Phase 7: Frontend screens
-- [ ] All Section 9.3 screens, live updates, command palette, Ask the Twin drawer, approvals
-- [ ] **Gate:** screens load with seed data, no console errors; Vitest passes; Lighthouse a11y ≥ 90
+- [x] All Section 9.3 screens, live updates, command palette, Ask the Twin drawer, approvals
+- [x] **Gate:** screens load with seed data, no console errors; Vitest passes; Lighthouse a11y ≥ 90
 
 ## Phase 8: Workers and connectors
-- [ ] ARQ jobs + schedules; mock connectors with live ticks; live adapter skeletons + respx tests
-- [ ] **Gate:** worker runs jobs; dashboard updates on ticks
+- [x] ARQ jobs + schedules; mock connectors with live ticks; live adapter skeletons + respx tests
+- [x] **Gate:** worker runs jobs; dashboard updates on ticks
 
 ## Phase 9: Hardening
 - [ ] Security headers, rate limits, perf checks, Helm chart, SECURITY.md, ARCHITECTURE.md, ADRs

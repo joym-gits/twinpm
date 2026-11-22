@@ -63,6 +63,11 @@ export function Topbar({ org, live, onPalette }: { org: string; live: boolean; o
     queryKey: ["programs"],
     queryFn: async () => unwrap(await api.GET("/api/v1/programs")),
   });
+  const initials = (me.data?.user.name ?? "")
+    .split(" ")
+    .map((x) => x[0])
+    .join("")
+    .slice(0, 2);
   async function logout() {
     await api.POST("/api/v1/auth/logout");
     router.replace("/login");
@@ -88,10 +93,10 @@ export function Topbar({ org, live, onPalette }: { org: string; live: boolean; o
         type="button"
         onClick={onPalette}
         className="flex h-8 w-72 items-center gap-2 rounded-lg border border-border bg-surface-2 px-3 text-sm text-muted hover:border-accent"
-        aria-label="Search and run commands (Ctrl or Command plus K)"
       >
         <Search className="size-4" aria-hidden /> Search or jump to…
-        <kbd className="ml-auto rounded border border-border px-1 text-[10px]">⌘K</kbd>
+        <span className="sr-only"> (Ctrl or Command plus K)</span>
+        <kbd aria-hidden className="ml-auto rounded border border-border px-1 text-[10px]">⌘K</kbd>
       </button>
       <div className="ml-auto flex items-center gap-1">
         {me.data?.demo_mode && (
@@ -110,13 +115,9 @@ export function Topbar({ org, live, onPalette }: { org: string; live: boolean; o
         <ThemeToggle />
         <Menu>
           <MenuTrigger asChild>
-            <Button variant="ghost" size="sm" aria-label="User menu">
+            <Button variant="ghost" size="sm" aria-label={`${initials} user menu`}>
               <span className="grid size-7 place-items-center rounded-full bg-navy-900 text-xs font-semibold text-white">
-                {me.data?.user.name
-                  .split(" ")
-                  .map((x) => x[0])
-                  .join("")
-                  .slice(0, 2)}
+                {initials}
               </span>
             </Button>
           </MenuTrigger>

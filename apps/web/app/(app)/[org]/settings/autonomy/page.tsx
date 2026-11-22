@@ -95,7 +95,6 @@ function AutonomyForm({ data, canEdit }: { data: Schemas["AutonomyOut"]; canEdit
               <li key={p.action_type} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3">
                 <div className="min-w-0 max-w-md">
                   <p className="text-sm font-medium">{humanize(p.action_type)}</p>
-                  <p className="text-xs text-muted">{p.description}</p>
                   <p className="mt-0.5 text-xs">
                     Level {levels[p.action_type]}: <span className="text-muted">{data.levels[String(levels[p.action_type])]}</span>
                   </p>

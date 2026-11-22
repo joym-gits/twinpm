@@ -1,0 +1,6 @@
+apiVersion: v2
+name: twinpm
+description: TwinPM - AI digital twin for technical program managers
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

@@ -55,7 +55,7 @@ function HealthCard({ programId }: { programId: string }) {
       <CardContent className="space-y-4">
         <div className="flex items-center gap-4">
           <HealthGauge score={h.score} delta={h.delta_7d} size={180} />
-          <div className="h-20 min-w-0 flex-1" aria-label="30-day health trend">
+          <div className="h-20 min-w-0 flex-1" role="img" aria-label="30-day health trend">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={h.trend}>
                 <defs>
@@ -271,7 +271,7 @@ function ForecastCard({ programId }: { programId: string }) {
               {expanded ? "Hide" : "Show"} distribution
             </Button>
             {expanded && (
-              <div className="h-32" aria-label="Completion date distribution">
+              <div className="h-32" role="img" aria-label="Completion date distribution">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={f.histogram as { date: string; count: number }[]}>
                     <XAxis dataKey="date" tickFormatter={(d) => shortDate(String(d))} fontSize={10} />

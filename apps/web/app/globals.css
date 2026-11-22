@@ -79,3 +79,20 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Status colours as text need more contrast than as fills (WCAG AA 4.5:1). */
+:root {
+  --warning-text: #92400e;
+  --success-text: #15803d;
+  --danger-text: #991b1b;
+}
+.dark {
+  --warning-text: #fbbf24;
+  --success-text: #4ade80;
+  --danger-text: #f87171;
+}
+@layer utilities {
+  .text-warning { color: var(--warning-text); }
+  .text-success { color: var(--success-text); }
+  .text-danger { color: var(--danger-text); }
+}

@@ -11,7 +11,7 @@ export function RiskBadge({ probability, showValue = true }: { probability: numb
     <Badge tone={TONE[level]} aria-label={`${level} risk, ${Math.round(probability * 100)} percent`}>
       <span aria-hidden>{MARK[level]}</span>
       {level}
-      {showValue && <span className="tabular-nums opacity-80">{Math.round(probability * 100)}%</span>}
+      {showValue && <span className="tabular-nums">{Math.round(probability * 100)}%</span>}
     </Badge>
   );
 }

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twinpm-web
+  labels: {{- include "twinpm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.web.replicas }}
+  selector: { matchLabels: { app: twinpm-web } }
+  template:
+    metadata: { labels: { app: twinpm-web } }
+    spec:
+      securityContext: { runAsNonRoot: true, runAsUser: 10001 }
+      containers:
+        - name: web
+          image: {{ .Values.image.web }}
+          ports: [{ containerPort: 3000, name: http }]
+          resources: {{- toYaml .Values.web.resources | nindent 12 }}
+          securityContext: { allowPrivilegeEscalation: false, capabilities: { drop: ["ALL"] } }
+          livenessProbe: { httpGet: { path: /login, port: http }, periodSeconds: 15 }
+          readinessProbe: { httpGet: { path: /login, port: http }, periodSeconds: 10 }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: twinpm-web }
+spec:
+  selector: { app: twinpm-web }
+  ports: [{ port: 3000, targetPort: http, name: http }]

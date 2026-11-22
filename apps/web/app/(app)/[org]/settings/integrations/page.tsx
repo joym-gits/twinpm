@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 type Integration = Schemas["IntegrationOut"];
 type Field = { key: string; label: string; secret?: boolean; placeholder?: string };
 
+/** Providers with a live adapter in the backend (connectors/live). Others are mock-only. */
 const PROVIDERS: Record<string, { name: string; fields: Field[] }> = {
   jira: {
     name: "Jira",
@@ -39,7 +40,8 @@ const PROVIDERS: Record<string, { name: string; fields: Field[] }> = {
 
 function ProviderCard({ i, canManage }: { i: Integration; canManage: boolean }) {
   const qc = useQueryClient();
-  const meta = PROVIDERS[i.provider] ?? { name: i.provider, fields: [] };
+  const meta = PROVIDERS[i.provider] ?? { name: i.provider.replace(/^\w/, (c) => c.toUpperCase()), fields: [] };
+  const liveSupported = meta.fields.length > 0;
   const [configuring, setConfiguring] = useState(false);
   const [config, setConfig] = useState<Record<string, string>>({});
   const patch = useMutation({
@@ -74,14 +76,13 @@ function ProviderCard({ i, canManage }: { i: Integration; canManage: boolean }) 
         </div>
         <div className="flex items-center gap-2">
           <Badge tone={i.configured ? "success" : "neutral"}>{i.configured ? "Credentials stored" : "Not configured"}</Badge>
-          <div role="radiogroup" aria-label={`${meta.name} mode`} className="inline-flex rounded-lg border border-border bg-surface-2 p-0.5">
+          <div role="group" aria-label={`${meta.name} mode`} className="inline-flex rounded-lg border border-border bg-surface-2 p-0.5">
             {(["mock", "live"] as const).map((m) => (
               <button
                 key={m}
                 type="button"
-                role="radio"
-                aria-checked={i.mode === m}
-                disabled={!canManage || patch.isPending}
+                aria-pressed={i.mode === m}
+                disabled={!canManage || patch.isPending || (m === "live" && !liveSupported && i.mode !== "live")}
                 onClick={() => chooseMode(m)}
                 className={cn("rounded-md px-3 py-1 text-xs capitalize", i.mode === m ? "bg-surface font-semibold shadow-sm" : "text-muted hover:text-text")}
               >
@@ -91,6 +92,8 @@ function ProviderCard({ i, canManage }: { i: Integration; canManage: boolean }) 
           </div>
         </div>
       </div>
+
+      {!liveSupported && <p className="text-xs text-muted">Mock only: live sync isn&apos;t available for this provider yet.</p>}
 
       {configuring && (
         <form

@@ -409,8 +409,6 @@ EPIC_DEPENDENCIES = [
     ("pay_api", "rate_limit"),
     ("pay_api", "fraud"),
     ("idem", "pay_api"),
-    ("pay_api", "ios_wallet"),
-    ("pay_api", "android_wallet"),
     ("rate_limit", "obs"),
     ("kafka", "fraud"),
     ("pay_api", "refunds"),

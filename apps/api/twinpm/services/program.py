@@ -16,7 +16,6 @@ from twinpm.core.tenancy import TenantContext
 from twinpm.db import models as m
 from twinpm.db.repository import Repo
 from twinpm.graph.dependency import build as build_graph
-from twinpm.graph.dependency import downstream
 from twinpm.ml import forecast, preference, scenario
 from twinpm.ml.delegation import plan_rebalance
 from twinpm.schemas.common import Citation, Driver
@@ -234,7 +233,9 @@ async def build_briefing(
         epic_id = max(crit, key=lambda n: graph.graph.nodes[n]["risk"])
         epic = epics.loc[epic_id]
         dependents = [
-            d for d in downstream(graph.graph, epic_id) if graph.graph.nodes[d]["kind"] == "epic"
+            d
+            for d in graph.graph.successors(epic_id)
+            if graph.graph.nodes[d]["kind"] == "epic"
         ]
         epic_p80 = date.fromisoformat(
             latest.distribution["epic_p80"].get(str(epic_id), latest.p80_date.isoformat())
